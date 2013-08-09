@@ -10,12 +10,10 @@ subroutine guessrho
   integer:: i,j,k
   double precision:: radius, Pi, angle, M, G,r, slope, c
   real:: den
-  
 
-  
 
   den=1.0
-  G=1
+  G=1.0
   
   
 !Allocate arrays  
@@ -25,7 +23,7 @@ subroutine guessrho
   slope=-by*1.0/ax	
   c=by*1.0  
   
-!  radius=ax
+  radius=(ax-1.5)
   Pi=3.14159265359
   
   
@@ -37,9 +35,12 @@ subroutine guessrho
     do j=1,numz
       do k=1,numphi
 !        angle=k*2*Pi/numphi
-!        r=((i*cos(angle)-0.5)**2+(i*sin(angle)-0.5)**2+(j+(radius-c-0.5))**2)**0.5
-!        if (r**2.lt.radius**2) then
-!          rho(i,j,k)=den   
+ !       r=((i*cos(angle)-1.5)**2+(i*sin(angle)-0.5)**2+(j+(radius-c-1.5))**2)**0.5
+  !      if (r**2.lt.radius**2) then
+   !       rho(i,j,k)=den   
+
+
+!Working>>
         if (j .lt. slope * i + c) then
           rho(i,j,k)=den       
 !	if ((i.le.ax).and.(j.le.by)) then
@@ -52,34 +53,35 @@ subroutine guessrho
   enddo
  
 !Find mass
-!  radius=radius/ax	
-!  c=c/ax	
+  radius=radius/(ax-1.5)	
+  c=c/(ax-1.5)	
 	
-!  M=den*4/3.0*Pi*radius**3	
+  M=den*4/3.0*Pi*radius**3	
 	
 !  print*, M	
 	
 !Create phi array which is theoretical solution to the Poisson solver
-!  do i=1,numr
-!    do j=1,numz
-!      do k=1,numphi
-!        angle=k*2*Pi/numphi
-!        r=(((i*cos(angle)-0.5)**2+(i*sin(angle)-0.5)**2+(j+(radius-c-0.5))**2)**0.5)/ax
-!        if (r**2.lt.radius**2) then
-!          phi(i,j,k)= -G*M*(3*radius**2-r**2)/2/radius**3          	  
-!        else
-!          phi(i,j,k)= -G*M/r
-!        endif
-       
-!	if (j==numz/2) then
-!	  print*, angle
-!	endif
-!      enddo
-!    enddo
-!  enddo	
+  do i=1,numr
+    do j=1,numz
+      do k=1,numphi
+        angle=k*2*Pi/numphi
+        r=(((i*cos(angle)-1.5)**2+(i*sin(angle)-0.5)**2+(j+(radius-c-1.5))**2)**0.5)/(ax-1.5)
+        if (r**2.lt.radius**2) then
+          phi(i,j,k)= -G*M*(3*radius**2-r**2)/2/radius**3          	  
+        else
+          phi(i,j,k)= -G*M/r
+        endif
+        
+      enddo
+    enddo
+  enddo	
 	
-	
-!Latest calculations
+!  call print1d(phi,"y",2,"anay")
+!  call print1d(phi,"x",2,"anax")
+  
+  
+  
+!Latest calculations but origin at 0,0,0
 	
 !      do i=1, numr
  !       do j=1, numz
@@ -91,59 +93,6 @@ subroutine guessrho
        !   endif
         !enddo
       !enddo
-  
-  
-  
-  
-  
-  
-      open(unit=10,file='rho.txt')
-      do j=1,numz
-        do i=1,numr  
-          write(10,*) i,j,rho(i,j,1) 
-        enddo
-        write(10,*)
-      enddo
-      close(10)
-      print*,"First guess of density rho.txt printed" 
-      
-!      open(unit=10,file='rho.txt')
- !       do i=1,numr  
-  !        
-   !       write(10,*) rho(i,1,1) 
-    !    enddo
-     ! close(10)
-      !print*,"Cross section file rho.txt printed"
-      
-      
-      
-!      open(unit=10,file='ana.txt')
- !     do j=1,numz
-  !      do i=1,numr  
-   !       write(10,*) i,j,phi(i,j,1) 
-    !    enddo
-     !   write(10,*)
-      !enddo
-!      close(10)
- !     print*,"Analytically solved potential ana.txt printed" 
 
- 	 
-!      open(unit=10,file='ana.txt')
- !       do i=1,numr  
-  !        write(10,*) phi(i,1,1) 
-   !     enddo
-    !  close(10)
-     ! print*,"Cross section file ana.txt printed" 	 
- 	 
- 	 
-!      open(unit=10,file='ana1.txt')
- !       do i=1,numr  
-  !        write(10,*) phi1(i,1,1) 
-   !     enddo
-    !  close(10)
-     ! print*,"Cross section file ana1.txt printed"
-      
-      
-  
   return
 end subroutine guessrho

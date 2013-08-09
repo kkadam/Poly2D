@@ -37,27 +37,26 @@ program main
           do k=1,numphi
             w=(i-1.5)/(ax-1.5)
          !   w=i/(ax-0.5)
-            psi(i,j,k)=-w**2/2
+            psi(i,j,k)=-w**2/2.0
 !            if (j==1) then
 !              print*,"w=",w,"i", i!,j,k    
 !            endif
           enddo
         enddo
       enddo   
-      
-     call print2d(psi,"mymy.txt")
-       
-     call print1d(psi,"x",3,"psix")  
-       
-     call print1d(psi,"y",30,"psiy")  
+
 	
       
 
 !Find potential and normalize     
       call poisson_solve
-      Re=ax*1.0/(numr)
+      !Re=ax*1.0/(numr)
+      Re=(ax-1.5)/(numr-1.5)
+!      print*,"Re",Re**2, Re**2.0
       pot=pot/Re**2
      
+      call print1d(pot,"y",2,"soly")
+      call print1d(pot,"x",2,"solx")
       
       
       
@@ -231,7 +230,10 @@ program main
       
       call print2d(rho,"res.txt")
  
-
+       
+     call print1d(rho,"x",2,"resx")  
+       
+     call print1d(rho,"y",2,"resy")  
       
       
       stop
