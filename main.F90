@@ -35,40 +35,29 @@ program main
       do i=1,numr
         do j=1,numz
           do k=1,numphi
-            w=1.0/ax*(i-1)
+            w=(i-1.5)/(ax-1.5)
+         !   w=i/(ax-0.5)
             psi(i,j,k)=-w**2/2
+!            if (j==1) then
+!              print*,"w=",w,"i", i!,j,k    
+!            endif
           enddo
         enddo
-      enddo  
-
-!      open(unit=10,file='psix.txt')
-!        do i=1,numr  
-!          write(10,*) psi(i,2,1) 
-!        enddo
-!      close(10)
-!      print*,"Cross section file psix.txt printed"
-
+      enddo   
+      
+     call print2d(psi,"mymy.txt")
+       
+     call print1d(psi,"x",3,"psix")  
+       
+     call print1d(psi,"y",30,"psiy")  
+	
       
 
 !Find potential and normalize     
       call poisson_solve
       Re=ax*1.0/(numr)
       pot=pot/Re**2
-      
-!      open(unit=10,file='solx.txt')
-!        do i=1,numr  
-!          write(10,*) pot(i,2,1) 
-!        enddo
-!      close(10)
-!      print*,"Cross section file solx.txt printed"
-      
-!      open(unit=10,file='soly.txt')
-!        do i=1,numz  
-!          write(10,*) pot(2,i,1) 
-!        enddo
-!      close(10)
-!      print*,"Cross section file soly.txt printed"      
-      
+     
       
       
       
@@ -139,25 +128,7 @@ program main
       
       rho_norm=rho(1,1,1)
 !      rho=rho/rho_norm
-      
-      
-
-      
-      
-!     open(unit=10,file='rho1.txt')
-!      do j=1,numz
-!        do i=1,numr  
-!          write(10,*) i,j,rho(i,j,1) 
-!        enddo
-!        write(10,*)
-!!      enddo
- !     close(10)
- !     print*,"First iteration rho1.txt printed"
-      
-      
-      
-      
-      
+    
       
 !!!!!!!Iterate till Convergence!!!!!!!
       delta_c=1.0
@@ -176,15 +147,6 @@ program main
         call poisson_solve
         pot=pot/Re**2
 
-!      open(unit=10,file='pot.txt')
-!      do j=1,numz
- !       do i=1,numr  
-  !        write(10,*) i,j,pot(i,j,1) 
-   !     enddo
-    !    write(10,*)
-     ! enddo
-      !close(10)
-      !print*,"Intermediate potential pot.txt printed" 
         
 !Find the constants h_0 and C_0      
       phi_a=pot(ax,ay,1) 
@@ -267,23 +229,9 @@ program main
       enddo
       
       
-      open(unit=10,file='res.txt')
-      do j=1,numz
-        do i=1,numr  
-          write(10,*) i,j,rho(i,j,1) 
-        enddo
-        write(10,*)
-      enddo
-      close(10)
-      print*,"First iteration density res.txt printed"
+      call print2d(rho,"res.txt")
  
-      
-      open(unit=10,file='ii.txt')
-        do i=1,numr  
-          write(10,*) rho(1,i,1) 
-        enddo
-      close(10)
-      print*,"Cross section file ii.txt printed"
+
       
       
       stop
