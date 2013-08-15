@@ -77,9 +77,10 @@ program main
 	
 	
 !        h_0= (-1.0*(phi_a-phi_b)/(psi_a-psi_b))**(0.5)
-        h_0= ((-1.0*(phi_a-phi_b)/(psi_a-psi_b)))**(0.5)
+        h_0= (-1.0*(phi_a-phi_b)/(psi_a-psi_b))
 !	h_0=0.0
-        c_0=phi_a+h_0**2*psi_a
+!        c_0=phi_a+h_0**2*psi_a
+	c_0=phi_a+h_0*psi_a
         
         print*,"phi_a",phi_a
         
@@ -97,7 +98,8 @@ program main
       do i=1,numr
         do j=1,numz
           do k=1,numphi
-            enth(i,j,k)=  C_0 - pot(i,j,k) - h_0**2 * psi(i,j,k)
+            !enth(i,j,k)=  C_0 - pot(i,j,k) - h_0**2 * psi(i,j,k)
+             enth(i,j,k)=  C_0 - pot(i,j,k) - h_0* psi(i,j,k)
           enddo
         enddo
       enddo  
@@ -162,9 +164,9 @@ program main
 !        c_0=phi_b
 !        h_0=((c_0-h_a-phi_a)/psi_a)**0.5
 !      else
-        h_0= ((-1.0*(phi_a-phi_b)/(psi_a-psi_b)))**(0.5)
+        h_0= ((-1.0*(phi_a-phi_b)/(psi_a-psi_b)))
 !        h_0=0.0 !Enabled for non rotation
-        c_0=phi_a+h_0**2*psi_a
+        c_0=phi_a+h_0*psi_a
         
         print*,"phi_a",phi_a
         
@@ -181,7 +183,8 @@ program main
         do i=1,numr
           do j=1,numz
             do k=1,numphi
-              enth(i,j,k)=  C_0 - pot(i,j,k) - h_0**2 * psi(i,j,k)
+              !enth(i,j,k)=  C_0 - pot(i,j,k) - h_0**2 * psi(i,j,k)
+              	      enth(i,j,k)=  C_0 - pot(i,j,k) - h_0* psi(i,j,k)
             enddo
           enddo
         enddo  
@@ -228,12 +231,12 @@ program main
       enddo
       
       
-      call print2d(rho,"res.txt")
+    !  call print2d(rho,"res.txt")
  
+       call print2d(rho,"n=4_100x67_110.2")
+     call print1d(rho,"x",2,"n=4_100x67_110_x.1")  
        
-     call print1d(rho,"x",2,"resx")  
-       
-     call print1d(rho,"y",2,"resy")  
+     call print1d(rho,"y",2,"n=4_100x67_110_y.1")  
       
       
       stop
