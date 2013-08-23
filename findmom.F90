@@ -1,4 +1,4 @@
-subroutine findmass(mom)
+subroutine findmom(mom)
   implicit none
   include 'runhydro.h'
  
@@ -10,7 +10,7 @@ subroutine findmass(mom)
 !*
 !*  Local Variables  
    real, dimension(numr,numz,numphi) :: psi
-   real :: m, dr, mom, pi
+   real :: m, dr, mom, pi,r
    integer :: i,j
    
    pi=3.14159
@@ -19,8 +19,8 @@ subroutine findmass(mom)
    m=0.0
    mom=0.0
    
-   do (i=2,ax)
-     do (j=2,by)
+   do i=2,ax
+     do j=2,by
         r=(i-1.5)*dr
         m=rho(i,j,1)*2*pi*r*dr**2
         mom=mom+m*r**2
@@ -29,6 +29,6 @@ subroutine findmass(mom)
    
    mom=mom*2
    
-   print*,"mom",mom
+   print*,"findmom mom=",mom
    
-end subroutine findmass
+end subroutine findmom

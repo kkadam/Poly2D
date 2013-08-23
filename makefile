@@ -4,7 +4,9 @@ FC=/opt/intel/composerxe-2011.5.209/bin/intel64/ifort
 F90FILES= bessel.F90 elle.F90 ellf.F90 gammln.F90\
 helmadi.F90 main.F90 potential_solver.F90 potsetup.F90 rd.F90 rf.F90 realft.F90 \
 setup.F90 sm.F90 tm.F90 tridagr.F90 tridagz.F90 guessrho.F90 poisson_solve.F90\
-print2d.F90 print1d.F90 print2default.F90 print1default.F90 testrho.F90
+print2d.F90 print1d.F90 print2default.F90 print1default.F90 testrho.F90 \
+findmass.F90 rhoavg.F90 findmom.F90
+
 
 OFILES= $(F90FILES:.F90=.o) 
 
@@ -13,7 +15,7 @@ scf:$(OFILES)
 
 $(OFILES):$(F90FILES)
 	$(FC) -g -c $(F90FILES) 
-	
+	#$(FC) -g -check all -c $(F90FILES)
 
 #hydro:$(OFILES)
 #       ifort -g -o hydro $(OFILES)

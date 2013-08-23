@@ -24,13 +24,26 @@ program main
       real :: w, phi_a, phi_b, h_a, h_b, psi_a,psi_b,phi_c, rho_c, h_0, c_0, rho_norm, h_0sq, h_max
       integer :: i,j,k,count
       real :: delta_c,delta_h, c_prev, h_prev,re
-!* 
+      integer:: id,gh
+      real::den, rav,m, mom
+!*    
+	
+	
 !************************************************************    
       print*, "The polytropic index = ", np
 
+
+!>>>>>>>>>>>>>>>>>>>>>>>>      	      
+      call testrho(3,0,2.0)      
+      call rhoavg(rav)
+      call findmom(mom)
+      
+      stop	      
+!>>>>>>>>>>>>>>>>>>>>>>>>>      	      
 !Guess the initial density
       call guessrho
-      
+	      
+      	      
 !Find rotational potential	
       do i=1,numr
         do j=1,numz
@@ -54,9 +67,7 @@ program main
       Re=(ax-1.5)/(numr-1.5)
 !      print*,"Re",Re**2, Re**2.0
       pot=pot/Re**2
-     
-      call print1d(pot,"y",2,"soly")
-      call print1d(pot,"x",2,"solx")
+
       
       
       
@@ -233,10 +244,8 @@ program main
       
     !  call print2d(rho,"res.txt")
  
-       call print2d(rho,"n=4_100x67_110.2")
-     call print1d(rho,"x",2,"n=4_100x67_110_x.1")  
-       
-     call print1d(rho,"y",2,"n=4_100x67_110_y.1")  
+       call print2default(rho)
+     call print1default(rho,"x",2)
       
       
       stop

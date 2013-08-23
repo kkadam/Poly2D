@@ -1,4 +1,4 @@
-subroutine testrho
+subroutine testrho(id,gh,den)
   implicit none
   include 'runhydro.h'
 
@@ -9,9 +9,9 @@ subroutine testrho
   integer:: id, gh 
   real:: den, M, vol, mom
 
-  id=1
-  gh=1
-  den=1.0
+!  id=1
+!  gh=1
+!  den=1.0
 
 !id=1 => Constant density sphere with radius ax
 !id=2 => Constant density cylinder with radius ax and half-height by
@@ -33,7 +33,7 @@ subroutine testrho
   
   
   call print2d(rho,"test2d")
-  call print1d(rho,"y",2,"tes1d")
+  call print1d(rho,"y",1,"tes1d")
   print*, "Total mass=", m, "Total volume=",vol,"MI=",mom
   
 end subroutine testrho
@@ -60,7 +60,7 @@ subroutine sph(den,m,vol,mom)
   do i=1,numr
     do j=1,numz
         r=((i-1.5)**2+(j+c-1.5)**2)**0.5
-        if (r**2.lt.radius**2) then
+        if (r**2.le.radius**2) then
           rho(i,j,1)=den   
         else
           rho(i,j,1)=0.0
@@ -92,7 +92,7 @@ subroutine cyl(den,m,vol,mom)
   
   do i=1,numr
     do j=1,numz
-      if ((i.lt.ax).and.(j.lt.by)) then
+      if ((i.le.ax).and.(j.le.by)) then
         rho(i,j,1)=den
       else
         rho(i,j,1)=0.0
@@ -132,7 +132,7 @@ subroutine lin(den,m,vol,mom)
   do i=1,numr
     do j=1,numz
       do k=1,numphi
-        if (j .lt. slope * i + c) then
+        if (j .le. slope * i + c) then
           rho(i,j,k)=den       
         else
           rho(i,j,k)=0.0
