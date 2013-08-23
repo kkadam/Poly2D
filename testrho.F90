@@ -32,7 +32,9 @@ subroutine testrho
   endif
   
   
-  
+  call print2d(rho,"test2d")
+  call print1d(rho,"y",2,"tes1d")
+  print*, "Total mass=", m, "Total volume=",vol,"MI=",mom
   
 end subroutine testrho
 
@@ -49,19 +51,20 @@ subroutine sph(den,m,vol,mom)
   common /poisson/ pot, rho
   
   integer:: i,j,k
-  real :: radius, m, vol, mom
+  real :: radius, m, vol, mom,angle,den,r,c,pi
+  
+  Pi=3.14159265359
+  radius=(ax-1.5)	
+  c=0
   
   do i=1,numr
     do j=1,numz
-      do k=1,numphi
-        angle=k*2*Pi/numphi
-        r=((i*cos(angle)-1.5)**2+(i*sin(angle)-0.5)**2+(j+(radius-c-1.5))**2)**0.5
+        r=((i-1.5)**2+(j+c-1.5)**2)**0.5
         if (r**2.lt.radius**2) then
-          rho(i,j,k)=den   
+          rho(i,j,1)=den   
         else
-          rho(i,j,k)=0.0
+          rho(i,j,1)=0.0
         endif
-      enddo
     enddo
   enddo
   
@@ -82,7 +85,10 @@ subroutine cyl(den,m,vol,mom)
   common /poisson/ pot, rho
   
   integer:: i,j,k
-  real :: radius, height, m, vol, mom
+  real :: radius, height, m, vol, mom,den, pi
+
+  
+  Pi=3.14159265359
   
   do i=1,numr
     do j=1,numz
@@ -105,7 +111,7 @@ end subroutine cyl
 
 
 !!Cone
-subroutine lin(rho,ax,ay,den,m,vol,mom)
+subroutine lin(den,m,vol,mom)
   implicit none
   include 'runhydro.h'
   real, dimension(numr,numz,numphi) :: pot, rho
@@ -113,7 +119,9 @@ subroutine lin(rho,ax,ay,den,m,vol,mom)
 
   integer:: i,j,k
   real :: slope, c, pi
-  real :: radius, height, m, vol, mom
+  real :: radius, height, m, vol, mom, den
+  
+  Pi=3.14159265359
   
   slope=-by*1.0/ax	
   c=by*1.0  
@@ -138,7 +146,7 @@ subroutine lin(rho,ax,ay,den,m,vol,mom)
   
   vol=pi/3.0*radius**2*height*2
   m=den*vol
-  mom=0.3*(m*radius**2)*2  
+  mom=0.3*(m*radius**2)  !Not *2 because vol takes care of it  
   
   
 end subroutine lin
@@ -152,9 +160,9 @@ subroutine ghost(den)
   common /poisson/ pot, rho
   
   integer:: i,j,k
-  real :: slope, c, pi
+  real :: slope, c, pi, den
   
-  slope=0.5	  
+  slope=1	  
   
   do i=1,numr
     do j=1,numz
