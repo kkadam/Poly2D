@@ -1,4 +1,6 @@
 subroutine findmom(mom)
+!Returns moment of inertia (rav) NOT angular momentum 
+!from common array rho
   implicit none
   include 'runhydro.h'
  
@@ -13,6 +15,8 @@ subroutine findmom(mom)
    real :: m, dr, mom, pi,r
    integer :: i,j
    
+   
+  print*, ">>> findmom"   
    pi=3.14159
    
    dr=1.0/(numr-1)
