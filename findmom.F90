@@ -16,7 +16,7 @@ subroutine findmom(mom)
    integer :: i,j
    
    
-  print*, ">>> findmom"   
+!  print*, ">>> findmom"   
    pi=3.14159
    
    dr=1.0/(numr-1)
@@ -33,6 +33,6 @@ subroutine findmom(mom)
    
    mom=mom*2
    
-   print*,"findmom mom=",mom
+!   print*,"findmom mom=",mom
    
 end subroutine findmom

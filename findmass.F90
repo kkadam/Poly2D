@@ -21,21 +21,13 @@ subroutine findmass(m)
      do j=2,by
         r=(i-1.5)*dr
         m=m+rho(i,j,1)*2*pi*r*dr**2
-          
-        
-        
           if (rho(i,j,1).gt.0) then 
             count=count+1
           endif
-        
-        
-        
-!        if (j==2) then
-!        endif
      enddo
    enddo
 
    m=m*2
-   print*,"findmass mass=", m, "masscount", count 
+!   print*,"findmass mass=", m, "masscount", count 
 end subroutine findmass
    
