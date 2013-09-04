@@ -21,16 +21,23 @@ program main
 !************************************************************      
 !*
 !*   Local variables
-      real :: w, phi_a, phi_b, h_a, h_b, psi_a,psi_b,phi_c, rho_c, h_0, c_0, rho_norm, h_0sq, h_max
+      real :: w, phi_a, phi_b, h_a, h_b, psi_a,psi_b,phi_c
+      real :: rho_c, h_0, c_0, rho_norm, h_0sq, h_max
       integer :: i,j,k,count
       real :: delta_c,delta_h, c_prev, h_prev,re,t1,t2, cpu1,cpu2
+      real :: p_max,cput
 !* 
 !************************************************************    
    
 	!   call system_clock(t1) 
       call cpu_time(cpu1)
       print*, "The polytropic index = ", np
-
+      print*, "SCF Started!!"   
+      
+    !  call testrho(1,0,0.1)
+      
+    !  call getinfo(h_0,c_0,0.5)
+     !      stop
 !Guess the initial density
       call guessrho
       
@@ -58,8 +65,8 @@ program main
 !      print*,"Re",Re**2, Re**2.0
       pot=pot/Re**2
      
-      call print1d(pot,"y",2,"soly")
-      call print1d(pot,"x",2,"solx")
+!      call print1d(pot,"y",2,"soly")
+!      call print1d(pot,"x",2,"solx")
       
       
       
@@ -233,19 +240,16 @@ program main
         
       enddo
       
-      
-    !  call print2d(rho,"res.txt")
  
- 
+     call cpu_time(cpu2)
+     cput=(cpu2-cpu1)/60.0
+     
+     
+     call getinfo(h_0,c_0,h_max,count,cput)
      call print2default(rho)
-     call print1default(rho,"x",2)
-     call getinfo(h_0,c_0)
+     call print1default(rho,"x",2) 
+     print*,"================================================================="
       
-     ! call system_clock(t2)       
-      call cpu_time(cpu2)
-      
-   !   print*, "sys clock time =", t2-t1
-      print*,"cpu time =", (cpu2-cpu1)/60.0 , "min"
       
       
       stop
