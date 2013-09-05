@@ -1,8 +1,10 @@
-       integer, parameter :: numr = 100
-       integer, parameter :: numz = 100
+
+!Gridsize
+       integer, parameter :: numr = 110
+       integer, parameter :: numz = 110
        integer, parameter :: numphi = 1
 
-
+!Not sure what these are
        integer, parameter :: rlwb = 2, rupb = numr - 1
 
        integer, parameter :: zlwb = 2, zupb = numz - 1
@@ -12,17 +14,19 @@
        integer, parameter :: numphi_by_two = numphi / 2
 
        real, parameter :: numphiinv = 1.0 / numphi
-       
+
+!Symmetry type       
        integer, parameter :: isym=3
 
 !Polytropic index       
-       real, parameter :: np=1.5
+       real, parameter :: np=0.5
        
 !Specify Boundary points A and B for a 2d configuration     
-      integer, parameter :: ax=60  
+      integer, parameter :: ax=100
       integer, parameter :: ay=2
       
       integer, parameter :: bx=2
-      integer, parameter :: by=50       
+      integer, parameter :: by=100   
 
-
+!Convergence critarion for SCF
+      integer, parameter :: conv=2
