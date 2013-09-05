@@ -38,7 +38,7 @@ subroutine print2default(inarray)
     enddo
   close(10)
 
-  print*, "File ",trim(filename)," printed"
+  print*, trim(filename)
 
 end subroutine print2default
 

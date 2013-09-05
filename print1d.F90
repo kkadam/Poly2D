@@ -27,6 +27,6 @@ subroutine print1d(inarray,axis,inum,filename)
   
   endif
   
-  print*,"File ",filename," printed"
+  print*,filename
   
 end subroutine print1d

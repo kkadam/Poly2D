@@ -16,6 +16,6 @@ subroutine print2d(inarray,filename)
     enddo
   close(10)
   
-  print*,"File ",filename," printed"
+  print*,filename
   
 end subroutine print2d

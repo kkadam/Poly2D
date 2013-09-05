@@ -48,6 +48,6 @@ subroutine print1default(inarray,axis,inum)
   
   endif
   
-  print*,"File ",trim(filename)," printed"
+  print*,trim(filename)
   
 end subroutine print1default
