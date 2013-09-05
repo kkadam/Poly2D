@@ -50,7 +50,7 @@ subroutine getinfo(h_0,c_0,h_max,count,cput)
   write (char_vol, "(F6.4)") vol
   write (char_rav, "(F6.4)") rav
   write (char_mom, "(F6.4)") mom
-  write (char_h_0, "(F6.4)") h_0
+  write (char_h_0, "(F8.6)") h_0
   write (char_am, "(F8.6)") am
   write (char_rb, "(F6.4)") rb
   write (char_p_max, "(F6.4)") p_max
@@ -65,19 +65,19 @@ subroutine getinfo(h_0,c_0,h_max,count,cput)
   filename='n='//trim(char_np)//'_'//trim(char_ax)//"x"//&
   trim(char_by)//"_"//trim(char_numr)//".info"   
   
-  print*,"===========================SUMMARY==============================="
+  print*,"==================================SUMMARY======================================"
   print*,"Polytropic index = ", char_np
   print*,"Resolution = ", trim(char_numr),"x", trim(char_numz)
   print*,"b/a = ", trim(char_by), "/", trim(char_ax)
-  print*,"   rb   ","  Omega_sq  ","    M    ", "    V    ","     J    "&
+  print*,"   rb   ","  Omega_sq  ","    M     ", "    V    ","    J    "&
   ,"    p_max    ","  mac_x   ","   mac_y"
-  print*," ",trim(char_rb),"    ",trim(char_h_0),"     ",trim(char_m),"   "&
-  , trim(char_vol), "   ",trim(char_am),"   ",trim(char_p_max),"     ",&
+  print*," ",trim(char_rb),"   ",trim(char_h_0),"    ",trim(char_m),"    "&
+  , trim(char_vol), "   ",trim(char_am),"   ",trim(char_p_max),"    ",&
   trim(char_mac_x), "     ", trim(char_mac_y)
   
   print*,"cpu time =", cput , "min"
   
-  print*,"=========================OUTPUT FILES============================"  
+  print*,"================================OUTPUT FILES==================================="  
   
   
   
@@ -91,7 +91,7 @@ subroutine getinfo(h_0,c_0,h_max,count,cput)
   trim(char_cput)
   close(10)
 
-  print*, "File ",trim(filename)," printed"
+  print*, trim(filename)
 
 
 end subroutine getinfo

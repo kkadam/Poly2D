@@ -36,8 +36,9 @@ program main
       
     !  call testrho(1,0,0.1)
       
-    !  call getinfo(h_0,c_0,0.5)
-     !      stop
+     ! call getinfo(0.0002995,0.000543134,0.5,11,320)
+      
+      !     stop
 !Guess the initial density
       call guessrho
       
@@ -208,27 +209,32 @@ program main
       
         K= (C_0 -phi_c)/(np+1)/rho_c**(1.0/np)
       
-      do i=1,numr
-        do j=1,numz
-          do k=1,numphi
-         !   rho(i,j,k)=(enth(i,j,k)/(np+1.0)/K)**np
-	    if (enth(i,j,k).gt.0) then 
-	      rho(i,j,k)=(enth(i,j,k)/h_max)**np
-	    else
-          !  if ((rho(i,j,k).lt.0).or.(i.gt.ax).or.(j.gt.by)) then
-              rho(i,j,k)=0.0
-            endif      
+        do i=1,numr
+          do j=1,numz
+            do k=1,numphi
+           !   rho(i,j,k)=(enth(i,j,k)/(np+1.0)/K)**np
+	      if (enth(i,j,k).gt.0) then 
+	        rho(i,j,k)=(enth(i,j,k)/h_max)**np
+	      else
+           !  if ((rho(i,j,k).lt.0).or.(i.gt.ax).or.(j.gt.by)) then
+                rho(i,j,k)=0.0
+              endif      
+            enddo
           enddo
-        enddo
-      enddo          
+        enddo          
       
         rho_norm=rho(1,1,1)
       
 !        rho=rho/rho_norm
-      
-        delta_c=abs(c_prev-c_0)
-        delta_h=abs(h_prev-h_0)
-        
+        if (conv==1) then 
+          delta_c=abs(c_prev-c_0)
+          delta_h=abs(h_prev-h_0)
+        elseif (conv==2) then
+          delta_c=abs((c_prev-c_0)/c_0)
+          delta_h=abs((h_prev-h_0)/h_0)          
+        else
+          print*,"Sum Ting Wong with Convergence critarion for SCF (conv)"
+        endif  
         c_prev=c_0
         h_prev=h_0
         
@@ -248,7 +254,7 @@ program main
      call getinfo(h_0,c_0,h_max,count,cput)
      call print2default(rho)
      call print1default(rho,"x",2) 
-     print*,"================================================================="
+     print*,"==============================================================================="
       
       
       
