@@ -253,7 +253,7 @@ program main
      
      call getinfo(h_0,c_0,h_max,count,cput)
      call print2default(rho)
-     call print1default(rho,"x",2) 
+     call print1default(rho,"x",2)
      print*,"==============================================================================="
       
       
