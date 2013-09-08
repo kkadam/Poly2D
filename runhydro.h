@@ -1,4 +1,4 @@
-
+integer, parameter :: by=2
 !Gridsize
        integer, parameter :: numr = 110
        integer, parameter :: numz = 110
@@ -16,17 +16,17 @@
        real, parameter :: numphiinv = 1.0 / numphi
 
 !Symmetry type       
-       integer, parameter :: isym=3
+       integer, parameter :: isym=2
 
 !Polytropic index       
-       real, parameter :: np=0.5
+       real, parameter :: np=0.1
        
 !Specify Boundary points A and B for a 2d configuration     
       integer, parameter :: ax=100
       integer, parameter :: ay=2
       
       integer, parameter :: bx=2
-      integer, parameter :: by=100   
+!      integer, parameter :: by=80
 
 !Convergence critarion for SCF
       integer, parameter :: conv=2

@@ -41,7 +41,8 @@ program main
       !     stop
 !Guess the initial density
       call guessrho
-      
+      call print2d(rho,"rho.2")
+!stop
 !Find rotational potential	
       do i=1,numr
         do j=1,numz
