@@ -31,6 +31,8 @@ subroutine guessrho
 !  print*, slope, c
   
 !Create rho array  
+if (bx.eq.2) then 
+
 if ((rb.lt.0.4).and.(rb.ge.0.15)) then
   print*, "small axis ratio = ",rb
 
@@ -84,6 +86,24 @@ else
     enddo
   enddo
  endif
+
+else
+
+ do i=1,numr
+    do j=1,numz
+
+
+        if ((j.lt.0.15*ax).and.(i.lt.ax).and.(i.gt.bx)) then
+          rho(i,j,1)=den
+        else
+          rho(i,j,1)=0.0
+        endif
+
+    enddo
+  enddo
+
+endif
+
 !Find mass
   radius=radius/(ax-1.5)	
   c=c/(ax-1.5)	
