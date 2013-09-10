@@ -1,7 +1,6 @@
-integer, parameter :: by=2
 !Gridsize
-       integer, parameter :: numr = 110
-       integer, parameter :: numz = 110
+       integer, parameter :: numr = 220
+       integer, parameter :: numz = 220
        integer, parameter :: numphi = 1
 
 !Not sure what these are
@@ -19,14 +18,14 @@ integer, parameter :: by=2
        integer, parameter :: isym=2
 
 !Polytropic index       
-       real, parameter :: np=0.1
+       real, parameter :: np=0.0
        
 !Specify Boundary points A and B for a 2d configuration     
-      integer, parameter :: ax=100
+      integer, parameter :: ax=200
       integer, parameter :: ay=2
       
       integer, parameter :: bx=2
-!      integer, parameter :: by=80
+      integer, parameter :: by=200
 
 !Convergence critarion for SCF
       integer, parameter :: conv=2
