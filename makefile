@@ -14,8 +14,9 @@ scf:$(OFILES)
 	$(FC) $(OFILES) -o scf
 
 $(OFILES):$(F90FILES)
-	$(FC) -g -c $(F90FILES) 
-	#$(FC) -g -check all -c $(F90FILES)
+	$(FC) -g -c -r8 -O3 $(F90FILES)
+        #$(FC) -g -c $(F90FILES) 
+	#$(FC) -g -check all -c -r8 $(F90FILES)
 
 #hydro:$(OFILES)
 #       ifort -g -o hydro $(OFILES)
