@@ -8,11 +8,11 @@ subroutine getinfo(h_0,c_0,h_max,count,cput)
   character(len=100) :: filename
   character*20 char_np, char_ax, char_by, char_numr, char_numz, char_m  
   character*20 char_vol, char_rav, char_mom, char_h_0, char_am, char_rb,&
-  char_p_max,char_mac_x,char_mac_y,char_cput,char_count
+  char_p_max,char_mac_x,char_mac_y,char_cput,char_count, char_bx
   integer :: count
   
   Pi=3.14159265359
-  rb=(by*1.0)/ax
+  rb=(by-1.5)/(ax-1.5)
   
   call findmass(m)
   call findvol(vol)
@@ -23,7 +23,7 @@ subroutine getinfo(h_0,c_0,h_max,count,cput)
   w=(abs(h_0))**(0.5)
   am=mom*w
   
-  mac_y=h_0/4.0/pi
+  mac_y=h_0/4.0/pi/rav
   mac_x=am**2/(4.0*pi*m**(10.0/3)*rav**(-1/3.0))
   
   p_max=h_max/(1.0+np)
@@ -38,12 +38,22 @@ subroutine getinfo(h_0,c_0,h_max,count,cput)
     write (char_ax, "(I3)") ax
   endif
 
-  if (by.lt.100) then
+  if ((by.lt.100).and.(by.gt.9)) then
     write (char_by, "(I2)") by
+  elseif (by.lt.10) then  
+    write (char_by, "(I1)") by
   else
     write (char_by, "(I3)") by
   endif
 
+  if ((bx.lt.100).and.(bx.gt.10)) then
+    write (char_bx, "(I2)") bx
+  elseif (bx.lt.10) then  
+    write (char_bx, "(I1)") bx
+  else
+    write (char_bx, "(I3)") bx
+  endif 
+  
   write (char_numr, "(I3)") numr
   write (char_numz, "(I3)") numz
   write (char_m, "(F6.4)") m
@@ -60,11 +70,16 @@ subroutine getinfo(h_0,c_0,h_max,count,cput)
   write (char_cput, "(F8.4)") cput
   
   
-  
+  if (bx==2) then
 !!Make filename	
-  filename='n='//trim(char_np)//'_'//trim(char_ax)//"x"//&
-  trim(char_by)//"_"//trim(char_numr)//".info"   
-  
+    filename='n='//trim(char_np)//'_'//trim(char_ax)//"x"//&
+    trim(char_by)//"_"//trim(char_numr)//".info"   
+  else
+    filename='n=-'//trim(char_np)//'_'//trim(char_ax)//"x"//&
+    trim(char_bx)//"_"//trim(char_numr)//".info"
+  endif
+  	  
+  	  
   print*,"==================================SUMMARY======================================"
   print*,"Polytropic index = ", char_np
   print*,"Resolution = ", trim(char_numr),"x", trim(char_numz)
