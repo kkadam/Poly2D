@@ -5,7 +5,7 @@ subroutine print2default(inarray)
   real, dimension(numr,numz,numphi) :: inarray
   integer :: i,j,k
   character(len=100) :: filename
-  character*20 char_np, char_ax, char_by, char_numr  
+  character*20 char_np, char_ax, char_by, char_numr, char_bx  
   
 !!Convert numbers to strings
   write (char_np, "(F3.1)") np
@@ -16,18 +16,34 @@ subroutine print2default(inarray)
     write (char_ax, "(I3)") ax
   endif
 
-  if (by.lt.100) then
+  if ((by.lt.100).and.(by.gt.9)) then
     write (char_by, "(I2)") by
+  elseif (by.lt.10) then  
+    write (char_by, "(I1)") by
   else
     write (char_by, "(I3)") by
   endif
 
+  if ((bx.lt.100).and.(bx.gt.10)) then
+    write (char_bx, "(I2)") bx
+  elseif (bx.lt.10) then  
+    write (char_bx, "(I1)") bx
+  else
+    write (char_bx, "(I3)") bx
+  endif 
+
   write (char_numr, "(I3)") numr
 
 !!Make filename	
-  filename='n='//trim(char_np)//'_'//trim(char_ax)//"x"//trim(char_by)//"_"//trim(char_numr)//".2"
-
-
+  if (bx==2) then	
+    filename='n='//trim(char_np)//'_'//trim(char_ax)//"x"//trim(char_by)&
+    //"_"//trim(char_numr)//".2"
+  else
+    filename='n=-'//trim(char_np)//'_'//trim(char_ax)//"x"//trim(char_bx)&
+    //"_"//trim(char_numr)//".2"
+  endif
+  
+  
 !!Write array
   open(unit=10,file=filename)
     do j=1,numz
