@@ -15,8 +15,10 @@ program main
       real, dimension(numr,numz,numphi) :: pot, rho
       common /poisson/ pot, rho
 
-      real, dimension(numr,numz,numphi) :: psi, enth
-
+      real, dimension(numr,numz,numphi) :: psi
+      
+      real, dimension(numr,numz,numphi) :: enth
+      common /vir/enth
 !*
 !************************************************************      
 !*
@@ -241,11 +243,9 @@ program main
         
         print*, "Iteration number = ",count
         print*,"C_0 = ",c_0, "h_0 = ",h_0
-        print*,"delta_c = ",delta_c, "delta_h = ",delta_h
+        print*,"delta_c = ",delta_c, "delta_h = ",delta_h   
         
-        
-        
-      enddo
+     enddo
       
  
      call cpu_time(cpu2)
@@ -254,7 +254,7 @@ program main
      
      call getinfo(h_0,c_0,h_max,count,cput)
      call print2default(rho)
-     call print1default(rho,"x",2)
+  !   call print1default(rho,"x",2)
      print*,"==============================================================================="
       
       

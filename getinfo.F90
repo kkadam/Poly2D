@@ -3,8 +3,8 @@ subroutine getinfo(h_0,c_0,h_max,count,cput)
   implicit none
   include 'runhydro.h'
 
-  real::rav, mom, m, vol, h_0,c_0,am ,w, mac_x,mac_y,pi,rb,h_max,p_max,&
-  cput
+  real::rav, mom, m, vol, h_0,c_0,am, mac_x,mac_y,pi,rb,h_max,p_max,&
+  cput, omega, T, W, P
   character(len=100) :: filename
   character*20 char_np, char_ax, char_by, char_numr, char_numz, char_m  
   character*20 char_vol, char_rav, char_mom, char_h_0, char_am, char_rb,&
@@ -20,13 +20,21 @@ subroutine getinfo(h_0,c_0,h_max,count,cput)
   
   rav=m/vol
   
-  w=(abs(h_0))**(0.5)
-  am=mom*w
+  omega=(abs(h_0))**(0.5)
+  am=mom*omega
   
   mac_y=h_0/4.0/pi/rav
   mac_x=am**2/(4.0*pi*m**(10.0/3)*rav**(-1/3.0))
   
   p_max=h_max/(1.0+np)
+  
+  T=1
+  W=2
+  P=3
+  
+  call virial(T,W,P,omega)
+  
+  print*, "T = ", T, "  W = ", W, "  P = ", P
   
   
 !!Convert numbers to strings
@@ -94,9 +102,7 @@ subroutine getinfo(h_0,c_0,h_max,count,cput)
   
   print*,"================================OUTPUT FILES==================================="  
   
-  
-  
-  
+ 
   
   open(unit=10,file=filename)
   write(10,*) trim(char_np)," ",trim(char_numr), " ",trim(char_numz)," ", &
