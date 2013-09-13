@@ -28,13 +28,9 @@ subroutine getinfo(h_0,c_0,h_max,count,cput)
   
   p_max=h_max/(1.0+np)
   
-  T=1
-  W=2
-  P=3
-  
   call virial(T,W,P,omega)
   
-  print*, "T = ", T, "  W = ", W, "  P = ", P
+  print*, "T = ", T, "  W = ", W, "  3P = ", P*3
   
   
 !!Convert numbers to strings
