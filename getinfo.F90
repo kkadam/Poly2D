@@ -7,8 +7,9 @@ subroutine getinfo(h_0,c_0,h_max,count,cput)
   cput, omega, T, W, P
   character(len=100) :: filename
   character*20 char_np, char_ax, char_by, char_numr, char_numz, char_m  
-  character*20 char_vol, char_rav, char_mom, char_h_0, char_am, char_rb,&
-  char_p_max,char_mac_x,char_mac_y,char_cput,char_count, char_bx
+  character*20 char_vol, char_rav, char_mom, char_h_0, char_am, char_rb, &
+  char_p_max,char_mac_x,char_mac_y,char_cput,char_count, char_bx, char_T, &
+  char_W, char_3P
   integer :: count
   
   Pi=3.14159265359
@@ -64,9 +65,13 @@ subroutine getinfo(h_0,c_0,h_max,count,cput)
   write (char_vol, "(F6.4)") vol
   write (char_rav, "(F6.4)") rav
   write (char_mom, "(F6.4)") mom
-  write (char_h_0, "(F8.6)") h_0
-  write (char_am, "(F8.6)") am
+  write (char_h_0, "(F6.4)") h_0
+  write (char_am, "(F6.4)") am
   write (char_rb, "(F6.4)") rb
+  write (char_T, "(F6.4)") T
+  write (char_W, "(F6.4)") W
+  write (char_3P, "(F6.4)") 3*P
+  
   write (char_p_max, "(F6.4)") p_max
   write (char_mac_x, "(F6.4)") mac_x
   write (char_mac_y, "(F6.4)") mac_y
@@ -84,26 +89,29 @@ subroutine getinfo(h_0,c_0,h_max,count,cput)
   endif
   	  
   	  
-  print*,"==================================SUMMARY======================================"
+  print*,"================================SUMMARY===================================="
   print*,"Polytropic index = ", char_np
   print*,"Resolution = ", trim(char_numr),"x", trim(char_numz)
   print*,"b/a = ", trim(char_by), "/", trim(char_ax)
-  print*,"   rb   ","  Omega_sq  ","    M     ", "    V    ","    J    "&
-  ,"    p_max    ","  mac_x   ","   mac_y"
-  print*,trim(char_rb)," ",trim(char_h_0)," ",trim(char_m)," "&
-  , trim(char_vol), " ",trim(char_am)," ",trim(char_p_max)," ",&
-  trim(char_mac_x), " ", trim(char_mac_y)
+  print*,"  rb  ","  Omega_sq  ","  M     ", "  V   ","    J   ","    T   ", "    -W   ", &
+  "  3PI  ","   P_max  "
+  print*,trim(char_rb),"   ",trim(char_h_0),"   ",trim(char_m),"  ", trim(char_vol), &
+  "  ",trim(char_am),"  ",trim(char_T),"  ",trim(char_W),"  ",trim(char_3P),"  ",  &
+  trim(char_p_max)
+  print*, " mac_x  ","mac_y"
+  print*, trim(char_mac_x), " ", trim(char_mac_y)
   
-  print*,"cpu time =", cput , "min"
+  print*,"cpu time =", trim(char_cput) , " min"
   
-  print*,"================================OUTPUT FILES==================================="  
+  print*,"==============================OUTPUT FILES================================="  
   
  
   
   open(unit=10,file=filename)
   write(10,*) trim(char_np)," ",trim(char_numr), " ",trim(char_numz)," ", &
   trim(char_by)," ",trim(char_ax)," ",trim(char_rb)," ",trim(char_h_0),&
-  " ",trim(char_m)," ", trim(char_vol), " ",trim(char_am)," ",trim(char_p_max),&
+  " ",trim(char_m)," ", trim(char_vol), " ",trim(char_am)," ", trim(char_T),&
+  " ",trim(char_W)," ",trim(char_3P)," ",trim(char_p_max),&
   " ",trim(char_mac_x)," ", trim(char_mac_y)," ",trim(char_count)," ",&
   trim(char_cput)
   close(10)
