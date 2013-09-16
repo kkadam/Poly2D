@@ -280,9 +280,9 @@
 !       potp = 2.0*numphiinv*potp	! f-t normalization
 
 !       open(unit=19,file='/Users/kundan/Desktop/Patrick_2D_Poisson/serial/potential',form='unformatted',status='unknown')
-	open(unit=19,file='potential',form='unformatted',status='unknown')
-       write(19) potp
-       close(19)
+!	open(unit=19,file='potential',form='unformatted',status='unknown')
+!       write(19) potp
+!       close(19)
 
 !       print*, "The symmetry used is ", isym
        

@@ -90,9 +90,9 @@ subroutine getinfo(h_0,c_0,h_max,count,cput)
   print*,"b/a = ", trim(char_by), "/", trim(char_ax)
   print*,"   rb   ","  Omega_sq  ","    M     ", "    V    ","    J    "&
   ,"    p_max    ","  mac_x   ","   mac_y"
-  print*," ",trim(char_rb),"   ",trim(char_h_0),"    ",trim(char_m),"    "&
-  , trim(char_vol), "   ",trim(char_am),"   ",trim(char_p_max),"    ",&
-  trim(char_mac_x), "     ", trim(char_mac_y)
+  print*,trim(char_rb)," ",trim(char_h_0)," ",trim(char_m)," "&
+  , trim(char_vol), " ",trim(char_am)," ",trim(char_p_max)," ",&
+  trim(char_mac_x), " ", trim(char_mac_y)
   
   print*,"cpu time =", cput , "min"
   

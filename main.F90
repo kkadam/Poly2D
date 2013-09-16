@@ -43,7 +43,7 @@ program main
       !     stop
 !Guess the initial density
       call guessrho
-      call print2d(rho,"rho.2")
+!      call print2d(rho,"rho.2")
 !stop
 !Find rotational potential	
       do i=1,numr
@@ -255,7 +255,7 @@ program main
      call getinfo(h_0,c_0,h_max,count,cput)
      call print2default(rho)
   !   call print1default(rho,"x",2)
-     print*,"==============================================================================="
+     print*,"==========================================================================="
       
       
       

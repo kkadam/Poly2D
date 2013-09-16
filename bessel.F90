@@ -296,12 +296,12 @@
   
 !       print*,"Intermediate potential file ii.txt printed"
 
-       open(unit=10,file='pott',form='unformatted',status='unknown')
-       open(unit=11,file='pots',form='unformatted',status='unknown')
-       write(10) pott
-       write(11) pots
-       close(10)
-       close(11)
+!       open(unit=10,file='pott',form='unformatted',status='unknown')
+!       open(unit=11,file='pots',form='unformatted',status='unknown')
+!       write(10) pott
+!       write(11) pots
+!       close(10)
+!       close(11)
 !       print*,"mmax bessel",mmax
 !       print*,"numphi_by_two",numphi_by_two
        return
