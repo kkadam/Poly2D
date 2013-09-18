@@ -26,224 +26,135 @@ program main
       real :: w, phi_a, phi_b, h_a, h_b, psi_a,psi_b,phi_c
       real :: rho_c, h_0, c_0, rho_norm, h_0sq, h_max
       integer :: i,j,k,count
-      real :: delta_c,delta_h, c_prev, h_prev,re,t1,t2, cpu1,cpu2
-      real :: p_max,cput
+      real :: cpu1,cpu2, p_max,cput
+      real :: phi_i, psi_i, rho_2i, gamma1, gamma2, h_2i
+      real :: c1,c2,omega_sq,d_c1,d_c2,d_omega_sq,c1_old,c2_old,omega_sq_old
+      real :: k1,k2, re, rho_1i, h_1i, h_norm
+      
 !* 
 !************************************************************    
-   
-	!   call system_clock(t1) 
+    
+	
       call cpu_time(cpu1)
       print*, "The polytropic index = ", np
       print*, "SCF Started!!"   
+
+      gamma1=1+1.0/np1
+      gamma2=1+1.0/np2
       
-    !  call testrho(1,0,0.1)
-      
-     ! call getinfo(0.0002995,0.000543134,0.5,11,320)
-      
-      !     stop
 !Guess the initial density
       call guessrho
 !      call print2d(rho,"rho.2")
-!stop
+
+	
 !Find rotational potential	
       do i=1,numr
         do j=1,numz
           do k=1,numphi
             w=(i-1.5)/(ax-1.5)
-         !   w=i/(ax-0.5)
             psi(i,j,k)=-w**2/2.0
-!            if (j==1) then
-!              print*,"w=",w,"i", i!,j,k    
-!            endif
           enddo
         enddo
       enddo   
-
-	
       
-
-!Find potential and normalize     
-      call poisson_solve
-      !Re=ax*1.0/(numr)
+!Normalization      
       Re=(ax-1.5)/(numr-1.5)
-!      print*,"Re",Re**2, Re**2.0
-      pot=pot/Re**2
-     
-!      call print1d(pot,"y",2,"soly")
-!      call print1d(pot,"x",2,"solx")
       
       
-      
-!Find the constants h_0 and C_0      
-      phi_a=pot(ax,ay,1) 
-      phi_b=pot(bx,by,1)
-      psi_a=psi(ax,ay,1)
-      psi_b=psi(bx,by,1)
-      
-!      print*,"phi_a",phi_a,"phi_b",phi_b, "phi_a-phi_b",phi_a-phi_b
-!      print*,"psi_a",psi_a,"psi_b",psi_b, "psi_a-psi_b",psi_a-psi_b
-!      print*, "(phi_a-phi_b)/(psi_a-psi_b)",(phi_a-phi_b)/(psi_a-psi_b)
-      
-!      if (phi_a.eq.phi_b) then 
-!        c_0=phi_b
-!        h_0=((c_0-h_a-phi_a)/psi_a)**0.5
-!      else
-	
-	
-!        h_0= (-1.0*(phi_a-phi_b)/(psi_a-psi_b))**(0.5)
-        h_0= (-1.0*(phi_a-phi_b)/(psi_a-psi_b))
-!	h_0=0.0
-!        c_0=phi_a+h_0**2*psi_a
-	c_0=phi_a+h_0*psi_a
-        
-        print*,"phi_a",phi_a
-        
-        
-!      endif
-	
-	
-!      c_0=phi_b
-!      h_0=((c_0-h_a-phi_a)/psi_a)**0.5
-	
-      print*,"C_00",C_0, "h_00",h_0
-      
-      
-!Get enthalpy      
-      do i=1,numr
-        do j=1,numz
-          do k=1,numphi
-            !enth(i,j,k)=  C_0 - pot(i,j,k) - h_0**2 * psi(i,j,k)
-             enth(i,j,k)=  C_0 - pot(i,j,k) - h_0* psi(i,j,k)
-          enddo
-        enddo
-      enddo  
-      h_max=maxval(enth)
-   
-   
-!Find the new normalized density      
-      phi_c=pot(1,1,1)
-      rho_c=rho(1,1,1)
-!      print*,"phi_c",phi_c,"rho_c",rho_c
-      
-      K= (C_0 -phi_c)/(np+1)/rho_c**(1.0/np)
-      
-      do i=1,numr
-        do j=1,numz
-          do k=1,numphi
-         !   rho(i,j,k)=(enth(i,j,k)/(np+1.0)/K)**np
-	    if (enth(i,j,k).gt.0) then 
-	      rho(i,j,k)=(enth(i,j,k)/h_max)**np
-	    else
-          !  if ((rho(i,j,k).lt.0).or.(i.gt.ax).or.(j.gt.by)) then
-              rho(i,j,k)=0.0
-            endif      
-          enddo
-        enddo
-      enddo        
-      
-      rho_norm=rho(1,1,1)
-!      rho=rho/rho_norm
-    
       
 !!!!!!!Iterate till Convergence!!!!!!!
-      delta_c=1.0
-      delta_h=1.0
+      d_c1=1
+      d_c2=1
+      d_omega_sq=1
       count=0
       
-      do while ((delta_c .gt. 1d-4).and.(delta_h.gt.1d-4))
+      do while ((d_c1 .gt. 1d-2).and.(d_c2.gt.1d-2).and.(d_omega_sq.gt.1d-2))
         count=count+1
-        
-        
-        !Find rotational potential	
-        !Generally changes with rho not with const omega
-        
         
         !Poisson solve for density      
         call poisson_solve
         pot=pot/Re**2
 
         
-!Find the constants h_0 and C_0      
-      phi_a=pot(ax,ay,1) 
-      phi_b=pot(bx,by,1)
-      psi_a=psi(ax,ay,1)
-      psi_b=psi(bx,by,1)
-      
-!      print*,"phi_a",phi_a,"phi_b",phi_b, "phi_a-phi_b",phi_a-phi_b
-!      print*,"psi_a",psi_a,"psi_b",psi_b, "psi_a-psi_b",psi_a-psi_b
- !     print*, "(phi_a-phi_b)/(psi_a-phi_b)",(phi_a-phi_b)/(psi_a-phi_b)
-      
-      
-!      if (phi_a.eq.phi_b) then 
-!        c_0=phi_b
-!        h_0=((c_0-h_a-phi_a)/psi_a)**0.5
-!      else
-        h_0= ((-1.0*(phi_a-phi_b)/(psi_a-psi_b)))
-!        h_0=0.0 !Enabled for non rotation
-        c_0=phi_a+h_0*psi_a
+!Find the constants c1, c2 and omega_sq      
+        phi_a=pot(ax,ay,1) 
+        phi_b=pot(bx,by,1)
+        psi_a=psi(ax,ay,1)
+        psi_b=psi(bx,by,1)
         
-        print*,"phi_a",phi_a
+        phi_i=pot(ix,2,1)
+        psi_i=psi(ix,2,1)
+        rho_2i=rho(ix,2,1)
         
-!      endif
-      
-!      c_0=phi_b
-!      h_0=((c_0-h_a-phi_a)/psi_a)**0.5
-	
-!      print*,"C_0",C_0, "h_0",h_0
-      
-      
-      
+        rho_1i=rho_2i*mu1/mu2
+        
+        
+        c2=phi_b
+        omega_sq=(c2-phi_a)/psi_a
+        
+        h_2i=c2-phi_i-omega_sq*psi_i
+        
+        K2=h_2i/(np2+1)/rho_2i**(1.0/np2)
+        K1=K2*rho_2i**(gamma2)/rho_1i**(gamma1)
+        
+        h_1i=h_2i*(np1+1)/(np2+1)*rho_2i/rho_1i
+        
+        !h_1i= (np1+1)*k1*rho_i**(1/np1)
+        !h_norm=h_1i*(np1+1)/(np2+1)*rho_2i/rho_i
+        
+        c1=h_1i+phi_i+omega_sq*psi_i
+        
+
+        
         !Get enthalpy      
         do i=1,numr
           do j=1,numz
-            do k=1,numphi
-              !enth(i,j,k)=  C_0 - pot(i,j,k) - h_0**2 * psi(i,j,k)
-              	      enth(i,j,k)=  C_0 - pot(i,j,k) - h_0* psi(i,j,k)
-            enddo
+            if (rho(i,j,1).gt.rho_2i) then  
+              enth(i,j,1)=  c1 - pot(i,j,1) - omega_sq* psi(i,j,1)
+              !enth(i,j,1)=enth(i,j,1)/h_norm
+            else
+              enth(i,j,1)=  c2 - pot(i,j,1) - omega_sq* psi(i,j,1)	    
+            endif
           enddo
         enddo  
         
         h_max=maxval(enth)
    
         !Find the new normalized density      
-        phi_c=pot(1,1,1)
-        rho_c=rho(1,1,1)
-!        print*,"phi_c",phi_c,"rho_c",rho_c
-      
-        K= (C_0 -phi_c)/(np+1)/rho_c**(1.0/np)
+        enth=enth/h_max
+        
       
         do i=1,numr
           do j=1,numz
-            do k=1,numphi
-           !   rho(i,j,k)=(enth(i,j,k)/(np+1.0)/K)**np
-	      if (enth(i,j,k).gt.0) then 
-	        rho(i,j,k)=(enth(i,j,k)/h_max)**np
+	      if (enth(i,j,1).gt.0) then 
+	         if (rho(i,j,1).gt.rho_2i) then  
+                   !rho(i,j,1)=(enth(i,j,1)/h_max)**np1
+                   rho(i,j,1)=enth(i,j,1)/(np1+1)/K1
+                 else
+              	   !rho(i,j,1)=(enth(i,j,1)/h_max)**np2
+              	   rho(i,j,1)=enth(i,j,1)/(np2+1)/K2	  
+                 endif
 	      else
-           !  if ((rho(i,j,k).lt.0).or.(i.gt.ax).or.(j.gt.by)) then
-                rho(i,j,k)=0.0
+                rho(i,j,1)=0.0
               endif      
-            enddo
           enddo
         enddo          
       
-        rho_norm=rho(1,1,1)
+        rho_norm=maxval(rho)
       
-!        rho=rho/rho_norm
-        if (conv==1) then 
-          delta_c=abs(c_prev-c_0)
-          delta_h=abs(h_prev-h_0)
-        elseif (conv==2) then
-          delta_c=abs((c_prev-c_0)/c_0)
-          delta_h=abs((h_prev-h_0)/h_0)          
-        else
-          print*,"Sum Ting Wong with Convergence critarion for SCF (conv)"
-        endif  
-        c_prev=c_0
-        h_prev=h_0
+        rho=rho/rho_norm
+
+        d_c1=abs((c1_old-c1)/c1)
+        d_c2=abs((c2_old-c2)/c2)
+        d_omega_sq=abs((omega_sq_old-omega_sq)/omega_sq)          
+  
+        c1_old=c1
+        c2_old=c2
+        omega_sq_old=omega_sq
         
         print*, "Iteration number = ",count
-        print*,"C_0 = ",c_0, "h_0 = ",h_0
-        print*,"delta_c = ",delta_c, "delta_h = ",delta_h   
+        print*,"c1 = ",c1, "c2 = ",c2, "omega_sq = ", omega_sq
+        print*,"d_c1 = ",d_c1, "dc_2 = ", d_c2, "d_omega_sq = ", d_omega_sq  
         
      enddo
       
@@ -254,7 +165,7 @@ program main
      
      call getinfo(h_0,c_0,h_max,count,cput)
      call print2default(rho)
-  !   call print1default(rho,"x",2)
+     call print1default(rho,"x",2)
      print*,"==========================================================================="
       
       
