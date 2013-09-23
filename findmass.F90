@@ -1,4 +1,4 @@
-subroutine findmass(m)
+subroutine findmass(rho_2i,m_core,m)
 !Returns total mass (m) from common array rho
   implicit none
   include 'runhydro.h'
@@ -7,7 +7,7 @@ subroutine findmass(m)
    real, dimension(numr,numz,numphi) :: pot, rho
    common /poisson/ pot, rho
 !*  
-   real :: m, dr,pi,r,Re
+   real :: m, dr,pi,r,Re,rho_2i,m_core
    integer :: i,j, count
 !*   
    
@@ -15,20 +15,26 @@ subroutine findmass(m)
    dr=1.0/(numr-1)
    Re=(ax-1.5)/(numr-1.5)
    m=0.0
+   m_core=0.0
    count=0
    
    
    do i=2,ax
      do j=2,numz   !was by
-        r=(i-1.5)*dr
+        r=(i-1.5)*dr        
         m=m+rho(i,j,1)*2*pi*r*dr**2
-         ! if (rho(i,j,1).gt.0) then 
-         !  count=count+1
-         ! endif
+        if (rho(i,j,1).gt.rho_2i) then         
+          m_core=m_core+rho(i,j,1)*2*pi*r*dr**2
+        endif
      enddo
    enddo
-
+   m_core=m_core*2/Re**3
    m=m*2/Re**3
+   
+   print*,"m_core", m_core
+   print*, "m", m
+   
+   
 !   print*,"findmass mass=", m, "masscount", count 
 end subroutine findmass
    

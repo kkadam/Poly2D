@@ -1,4 +1,4 @@
-subroutine virial(T,W,P,omega)
+subroutine virial(T,W,P,omega,rho_2i)
   implicit none
   include 'runhydro.h'
 
@@ -9,7 +9,7 @@ subroutine virial(T,W,P,omega)
   common /vir/enth  
   
   
-  real :: T, W, P, omega, r, m, dr, pi, press, Re
+  real :: T, W, P, omega, r, m, dr, pi, press, Re, rho_2i
   integer :: i,j
   
   Pi=3.14159265359
@@ -43,7 +43,11 @@ subroutine virial(T,W,P,omega)
   do i=2,ax
      do j=2,numz  !was by
         r=(i-1.5)*dr
-        press=rho(i,j,1)*enth(i,j,1)/(1.0+np)
+        if (rho(i,j,1).gt.rho_2i) then
+          press=rho(i,j,1)*enth(i,j,1)/(1.0+np1)
+        else
+          press=rho(i,j,1)*enth(i,j,1)/(1.0+np2) 
+        endif
         P=P+press*2*pi*r*dr**2
      enddo
    enddo  

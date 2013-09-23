@@ -29,14 +29,13 @@ program main
       real :: cpu1,cpu2, p_max,cput
       real :: phi_i, psi_i, rho_2i, gamma1, gamma2, h_2i
       real :: c1,c2,omega_sq,d_c1,d_c2,d_omega_sq,c1_old,c2_old,omega_sq_old
-      real :: k1,k2, re, rho_1i, h_1i, h_norm
+      real :: k1,k2, re, rho_1i, h_1i, h_norm, rho_2i_norm
       
 !* 
 !************************************************************    
     
 	
       call cpu_time(cpu1)
-      print*, "The polytropic index = ", np
       print*, "SCF Started!!"   
 
       gamma1=1+1.0/np1
@@ -68,7 +67,7 @@ program main
       d_omega_sq=1
       count=0
       
-      do while ((d_c1 .gt. 1d-2).and.(d_c2.gt.1d-2).and.(d_omega_sq.gt.1d-2))
+      do while ((d_c1 .gt. 1d-4).and.(d_c2.gt.1d-4).and.(d_omega_sq.gt.1d-4))
         count=count+1
         
         !Poisson solve for density      
@@ -119,20 +118,21 @@ program main
         enddo  
         
         h_max=maxval(enth)
-   
+        rho_2i_norm=mu2/mu1*(h_1i/h_max)**np1
+        
         !Find the new normalized density      
-        enth=enth/h_max
+        !enth=enth/h_max
         
       
         do i=1,numr
           do j=1,numz
 	      if (enth(i,j,1).gt.0) then 
 	         if (rho(i,j,1).gt.rho_2i) then  
-                   !rho(i,j,1)=(enth(i,j,1)/h_max)**np1
-                   rho(i,j,1)=enth(i,j,1)/(np1+1)/K1
+                   rho(i,j,1)=(enth(i,j,1)/h_max)**np1
+                   !rho(i,j,1)=enth(i,j,1)/(np1+1)/K1
                  else
-              	   !rho(i,j,1)=(enth(i,j,1)/h_max)**np2
-              	   rho(i,j,1)=enth(i,j,1)/(np2+1)/K2	  
+              	   rho(i,j,1)=rho_2i_norm*(enth(i,j,1)/h_2i)**np2
+              	   !rho(i,j,1)=enth(i,j,1)/(np2+1)/K2	  
                  endif
 	      else
                 rho(i,j,1)=0.0
@@ -157,13 +157,13 @@ program main
         print*,"d_c1 = ",d_c1, "dc_2 = ", d_c2, "d_omega_sq = ", d_omega_sq  
         
      enddo
-      
+     print*,rho_2i 
  
      call cpu_time(cpu2)
      cput=(cpu2-cpu1)/60.0
      
      
-     call getinfo(h_0,c_0,h_max,count,cput)
+     call getinfo(h_0,c_0,h_max,rho_2i,count,cput)
      call print2default(rho)
      call print1default(rho,"x",2)
      print*,"==========================================================================="

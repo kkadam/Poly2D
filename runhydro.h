@@ -1,8 +1,25 @@
+
 !Gridsize
-       integer, parameter :: numr = 220
-       integer, parameter :: numz = 220
+       integer, parameter :: numr = 510
+       integer, parameter :: numz = 510
        integer, parameter :: numphi = 1
 
+!Polytropic index        
+       real, parameter :: np1=5
+       real, parameter :: np2=1
+
+       real, parameter :: mu1=5
+       real, parameter :: mu2=1
+       
+!Specify Boundary points A and B for a 2d configuration     
+      integer, parameter :: ix=40
+      integer, parameter :: ax=500
+      integer, parameter :: ay=2
+      
+      integer, parameter :: bx=2
+      integer, parameter :: by=300
+
+      
 !Not sure what these are
        integer, parameter :: rlwb = 2, rupb = numr - 1
 
@@ -14,18 +31,6 @@
 
        real, parameter :: numphiinv = 1.0 / numphi
 
-!Symmetry type       
+!Symmetry type
        integer, parameter :: isym=2
 
-!Polytropic index       
-       real, parameter :: np=0.0
-       
-!Specify Boundary points A and B for a 2d configuration     
-      integer, parameter :: ax=200
-      integer, parameter :: ay=2
-      
-      integer, parameter :: bx=2
-      integer, parameter :: by=200
-
-!Convergence critarion for SCF
-      integer, parameter :: conv=2
