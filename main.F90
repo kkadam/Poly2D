@@ -24,7 +24,7 @@ program main
 !*
 !*   Local variables
       real :: w, phi_a, phi_b, h_a, h_b, psi_a,psi_b,phi_c
-      real :: rho_c, h_0, c_0, rho_norm, h_0sq, h_max
+      real :: rho_c, c_0, rho_norm, h_max
       integer :: i,j,k,count
       real :: cpu1,cpu2, p_max,cput
       real :: phi_i, psi_i, rho_2i, gamma1, gamma2, h_2i
@@ -93,8 +93,8 @@ program main
         
         h_2i=c2-phi_i-omega_sq*psi_i
         
-        K2=h_2i/(np2+1)/rho_2i**(1.0/np2)
-        K1=K2*rho_2i**(gamma2)/rho_1i**(gamma1)
+!        K2=h_2i/(np2+1)/rho_2i**(1.0/np2)
+!        K1=K2*rho_2i**(gamma2)/rho_1i**(gamma1)
         
         h_1i=h_2i*(np1+1)/(np2+1)*rho_2i/rho_1i
         
@@ -163,7 +163,7 @@ program main
      cput=(cpu2-cpu1)/60.0
      
      
-     call getinfo(h_0,c_0,h_max,rho_2i,count,cput)
+     call getinfo(omega_sq,c_0,h_max,rho_2i,count,cput)
      call print2default(rho)
      call print1default(rho,"x",2)
      print*,"==========================================================================="
