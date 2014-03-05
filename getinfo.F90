@@ -1,9 +1,9 @@
-subroutine getinfo(h_0,c_0,h_max,rho_2i,count,cput)
+subroutine getinfo(h_0,h_max,rho_2i,count,cput)
 !Prints summary of the run on the screen and in a file 
   implicit none
   include 'runhydro.h'
 
-  real::rav, mom, m, vol, h_0,c_0,am, mac_x,mac_y,pi,rb,h_max,p_max,&
+  real::rav, mom, m, vol, h_0,am, mac_x,mac_y,pi,rb,h_max,p_max,&
   cput, omega, T, W, P, rho_2i, m_core, frac_core, r_core
   character(len=100) :: filename
   character*20 char_np1, char_ax, char_by, char_numr, char_numz, char_m  

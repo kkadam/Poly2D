@@ -24,7 +24,7 @@ program main
 !*
 !*   Local variables
       real :: w, phi_a, phi_b, h_a, h_b, psi_a,psi_b,phi_c
-      real :: rho_c, c_0, rho_norm, h_max
+      real :: rho_c, rho_norm, h_max
       integer :: i,j,k,count
       real :: cpu1,cpu2, p_max,cput
       real :: phi_i, psi_i, rho_2i, gamma1, gamma2, h_2i
@@ -157,13 +157,17 @@ program main
         print*,"d_c1 = ",d_c1, "dc_2 = ", d_c2, "d_omega_sq = ", d_omega_sq  
         
      enddo
-     print*,rho_2i 
- 
+     print*,"old rho_2i",rho_2i, "old h_max", h_max 
+     
+     rho_2i=rho(ix,2,1)
+     h_max=maxval(enth)
+     print*, "rho_2i", rho_2i, "h_max",h_max
+     
      call cpu_time(cpu2)
      cput=(cpu2-cpu1)/60.0
      
      
-     call getinfo(omega_sq,c_0,h_max,rho_2i,count,cput)
+     call getinfo(omega_sq,h_max,rho_2i,count,cput)
      call print2default(rho)
      call print1default(rho,"x",2)
      print*,"==========================================================================="
