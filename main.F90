@@ -44,7 +44,7 @@ program main
 !Guess the initial density
       call guessrho
 !      call print2d(rho,"rho.2")
-
+!      call print1d(rho,"y",2,"rho")
 	
 !Find rotational potential	
       do i=1,numr
@@ -55,6 +55,8 @@ program main
           enddo
         enddo
       enddo   
+      
+!      call print1d(psi,"y",2,"psi")
       
 !Normalization      
       Re=(ax-1.5)/(numr-1.5)
@@ -73,7 +75,7 @@ program main
         !Poisson solve for density      
         call poisson_solve
         pot=pot/Re**2
-
+!        call print1d(pot,"y",2,"pot")
         
 !Find the constants c1, c2 and omega_sq      
         phi_a=pot(ax,ay,1) 
@@ -88,7 +90,9 @@ program main
         rho_1i=rho_2i*mu1/mu2
         
         
-        c2=phi_b
+!Edited for torous        c2=phi_b
+	
+	c2=(phi_a*psi_b-phi_b*psi_a)/(psi_b-psi_a)
         omega_sq=(c2-phi_a)/psi_a
         
         h_2i=c2-phi_i-omega_sq*psi_i
@@ -170,6 +174,8 @@ program main
      call getinfo(omega_sq,h_max,rho_2i,count,cput)
      call print2default(rho)
      call print1default(rho,"x",2)
+!     call print1d(enth,"y",2,"enth")
+!     call print1d(pot,"y",2,"pot")
      print*,"==========================================================================="
       
       
