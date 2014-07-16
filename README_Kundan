@@ -1,5 +1,20 @@
-first readme
-difffff
-modify readme
+Poly2D
+========
+//Kundan Kadam July 16 2014
 
-boom
+Purpose:
+1. Creates a 2d rotating polytropic/ bipolytropic star with core and envelope having different polytropic indices.
+   There can be a molecular weight jump at the interface.
+
+Required:
+
+   
+How to use:
+1. Specify relevant parameters in file param.h
+2. Do:
+   >> make cl
+   >> make
+   >> ./bipoly
+   
+Note:
+File ana.F90 contains analytical solution which exists for n1=5 and n2=1 case.
