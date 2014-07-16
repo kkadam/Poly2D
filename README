@@ -1,0 +1,22 @@
+Poly2D
+========
+//Kundan Kadam July 16 2014
+
+Purpose:
+1. Creates a 2d rotating polytropic star or torus.
+
+Required:
+1. Guesses for points A and B.
+   A(ax.ay) = equatorial boundary of rotating star/ outer edge of torus torus
+   B(bx,by) = axial boundary of rotating star/ inner edge of torus torus
+   Specified in file runhydro.h.
+   
+How to use:
+1. Specify relevant parameters in file runhydro.h
+2. Do:
+   >> make cl
+   >> make
+   >> ./scf
+   
+Note:
+The polytropic results match Hachisu 1986a.
