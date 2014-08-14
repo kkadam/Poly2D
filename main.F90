@@ -19,6 +19,9 @@ program main
       
       real, dimension(numr,numz,numphi) :: enth
       common /vir/enth
+
+      real, allocatable :: rho3d(:,:,:)
+
 !*
 !************************************************************      
 !*
@@ -38,6 +41,7 @@ program main
       call cpu_time(cpu1)
       print*, "SCF Started!!"   
 
+      allocate(rho3d(numr,numz,256))
       gamma1=1+1.0/np1
       gamma2=1+1.0/np2
       
@@ -72,7 +76,7 @@ program main
       do while ((d_c1 .gt. 1d-4).and.(d_c2.gt.1d-4).and.(d_omega_sq.gt.1d-4))
         count=count+1
         
-        !Poisson solve for density      
+!Poisson solve for density      
         call poisson_solve
         pot=pot/Re**2
 !        call print1d(pot,"y",2,"pot")
@@ -88,8 +92,7 @@ program main
         rho_2i=rho(ix,2,1)
         
         rho_1i=rho_2i*mu1/mu2
-        
-        
+               
 !Edited for torous        c2=phi_b
 	
 	c2=(phi_a*psi_b-phi_b*psi_a)/(psi_b-psi_a)
@@ -97,19 +100,11 @@ program main
         
         h_2i=c2-phi_i-omega_sq*psi_i
         
-!        K2=h_2i/(np2+1)/rho_2i**(1.0/np2)
-!        K1=K2*rho_2i**(gamma2)/rho_1i**(gamma1)
-        
         h_1i=h_2i*(np1+1)/(np2+1)*rho_2i/rho_1i
         
-        !h_1i= (np1+1)*k1*rho_i**(1/np1)
-        !h_norm=h_1i*(np1+1)/(np2+1)*rho_2i/rho_i
-        
         c1=h_1i+phi_i+omega_sq*psi_i
-        
-
-        
-        !Get enthalpy      
+                
+!Get enthalpy      
         do i=1,numr
           do j=1,numz
             if (rho(i,j,1).gt.rho_2i) then  
@@ -124,19 +119,14 @@ program main
         h_max=maxval(enth)
         rho_2i_norm=mu2/mu1*(h_1i/h_max)**np1
         
-        !Find the new normalized density      
-        !enth=enth/h_max
-        
-      
+!Find the new normalized density      
         do i=1,numr
           do j=1,numz
 	      if (enth(i,j,1).gt.0) then 
 	         if (rho(i,j,1).gt.rho_2i) then  
                    rho(i,j,1)=(enth(i,j,1)/h_max)**np1
-                   !rho(i,j,1)=enth(i,j,1)/(np1+1)/K1
                  else
               	   rho(i,j,1)=rho_2i_norm*(enth(i,j,1)/h_2i)**np2
-              	   !rho(i,j,1)=enth(i,j,1)/(np2+1)/K2	  
                  endif
 	      else
                 rho(i,j,1)=0.0
@@ -165,21 +155,53 @@ program main
      
      rho_2i=rho(ix,2,1)
      h_max=maxval(enth)
-     print*, "rho_2i", rho_2i, "h_max",h_max
      
      call cpu_time(cpu2)
      cput=(cpu2-cpu1)/60.0
      
-     
+
      call getinfo(omega_sq,h_max,rho_2i,count,cput)
+
      call print2default(rho)
      call print1default(rho,"x",2)
 !     call print1d(enth,"y",2,"enth")
 !     call print1d(pot,"y",2,"pot")
+     do i=1,numr
+        do j=1,numz
+           do k=1,256
+              rho3d(i,j,k)  = rho(i,j,1)
+           enddo
+        enddo
+     enddo
+
+     do i=1,numr
+        do j=1,numz
+           do k=1,256      
+              if (rho3d(i,j,k).lt. 1d-10) then 
+                 rho3d(i,j,k) = 1d-10
+              endif
+           enddo
+        enddo
+     enddo      
+     
+!Write binary output file for code initial_conditions_fc.F90 
+    open(unit=8,file='density.bin',                                   &
+        form='unformatted',convert='BIG_ENDIAN',status='replace')
+       write(8) rho3d
+    close(8)
+         open(unit=10,file="star1")
+         do j=1,numr
+           do i=1,numz
+             write(10,*) i,j,rho3d(i,j,1)
+             enddo
+           write(10,*)
+         enddo
+         close(10)	
+     print*,"Binary file density.bin printed"
      print*,"==========================================================================="
       
       
       
       stop
-      end program main
+end program main
 
