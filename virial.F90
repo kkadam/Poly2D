@@ -16,7 +16,7 @@ subroutine virial(T,W,P,omega,rho_2i)
   
   dr=1.0/(numr-1)
   Re=(ax-1.5)/(numr-1.5)
-  print*, dr
+!  print*, dr
   !Find rotational energy T
   T=0.0
   do i=2,ax

@@ -31,8 +31,8 @@ subroutine findmass(rho_2i,m_core,m)
    m_core=m_core*2/Re**3
    m=m*2/Re**3
    
-   print*,"m_core", m_core
-   print*, "m", m
+!   print*,"m_core", m_core
+!   print*, "m", m
    
    
 !   print*,"findmass mass=", m, "masscount", count 

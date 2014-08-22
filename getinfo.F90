@@ -4,14 +4,14 @@ subroutine getinfo(h_0,h_max,rho_2i,count,cput)
   include 'runhydro.h'
   real::rav, mom, m, vol, h_0,am, mac_x, mac_y, pi, rb, h_max, p_max, cput,  &
         omega, T, W, P, rho_2i, m_core, frac_core, r_core, kappa1, kappa2,   &
-        rho_1i
+        rho_1i, VC
   character(len=100) :: filename
   character*20 char_np1, char_ax, char_by, char_numr, char_numz, char_m
   character*20 char_vol, char_rav, char_mom, char_h_0, char_am, char_rb,     &
                char_p_max,char_mac_x,char_mac_y,char_cput,char_count,        &
                char_bx, char_T, char_W, char_3P, char_ix, char_np2, char_mu1,&
                char_mu2, char_rcore, char_m_core, char_frac_core,            &
-               char_kappa1, char_kappa2, char_rho1i, char_rho2i
+               char_kappa1, char_kappa2, char_rho1i, char_rho2i, char_vc
   integer :: count
 
   Pi=3.14159265359
@@ -35,6 +35,7 @@ subroutine getinfo(h_0,h_max,rho_2i,count,cput)
   r_core=(ix-1.5)*1.0/(ax-1.5)
 
   call virial(T,W,P,omega,rho_2i)
+  VC=abs(2*T-W+3*P)/abs(W)
 
   rho_1i=rho_2i*mu1/mu2
   
@@ -92,7 +93,7 @@ subroutine getinfo(h_0,h_max,rho_2i,count,cput)
   write (char_mac_y, "(F6.4)") mac_y
   write (char_count, "(I2)") count
   write (char_cput, "(F8.4)") cput
-
+  write (char_vc, "(F6.4)") VC
   write (char_kappa1, "(F6.4)") kappa1
   write (char_kappa2, "(F6.4)") kappa2
   write (char_rho1i, "(F6.4)") rho_1i  
@@ -125,7 +126,8 @@ subroutine getinfo(h_0,h_max,rho_2i,count,cput)
   print*,trim(char_rb),"   ",trim(char_h_0),"   ",trim(char_m),"  ", trim(char_vol),      &
   "  ",trim(char_am),"  ",trim(char_T),"  ",trim(char_W),"  ",trim(char_3P),"  ",         &
   trim(char_p_max)
-  
+ 
+  print*,"VC = ", VC
   print*,"cpu time =", trim(char_cput) , " min"
   
   print*,"==============================OUTPUT FILES================================="  
@@ -140,7 +142,7 @@ subroutine getinfo(h_0,h_max,rho_2i,count,cput)
   trim(char_frac_core)," ",trim(char_h_0)," ",trim(char_m)," ",trim(char_vol)," ",         &
   trim(char_am), " ",trim(char_T)," ", trim(char_W)," ",trim(char_3P)," ",trim(char_p_max),&
   " ",trim(char_kappa1)," ",trim(char_kappa1)," ",trim(char_rho1i)," ",trim(char_rho2i),   &
-  " ", trim(char_count), " ",trim(char_cput)
+  " ",VC," ", trim(char_count), " ",trim(char_cput)
   close(10)
 
   print*, trim(filename)

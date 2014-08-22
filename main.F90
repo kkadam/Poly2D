@@ -26,14 +26,16 @@ program main
 !************************************************************      
 !*
 !*   Local variables
-      real :: w, phi_a, phi_b, h_a, h_b, psi_a,psi_b,phi_c
+      real :: w_rot, phi_a, phi_b, h_a, h_b, psi_a,psi_b,phi_c
       real :: rho_c, rho_norm, h_max
       integer :: i,j,k,count
       real :: cpu1,cpu2, p_max,cput
       real :: phi_i, psi_i, rho_2i, gamma1, gamma2, h_2i
-      real :: c1,c2,omega_sq,d_c1,d_c2,d_omega_sq,c1_old,c2_old,omega_sq_old
+      real :: c1,c2,omega_sq,d_c1,d_c2,d_omega_sq,c1_old,c2_old,&
+              omega_sq_old, VC, omega
+      real :: T, W, P
       real :: k1,k2, re, rho_1i, h_1i, h_norm, rho_2i_norm
-      
+      character*20 char_it 
 !* 
 !************************************************************    
     
@@ -54,8 +56,8 @@ program main
       do i=1,numr
         do j=1,numz
           do k=1,numphi
-            w=(i-1.5)/(ax-1.5)
-            psi(i,j,k)=-w**2/2.0
+            w_rot=(i-1.5)/(ax-1.5)
+            psi(i,j,k)=-w_rot**2/2.0
           enddo
         enddo
       enddo   
@@ -71,9 +73,14 @@ program main
       d_c1=1
       d_c2=1
       d_omega_sq=1
+      VC=1
+      c1=0
+      c2=0
+      omega_sq=0
       count=0
       
-      do while ((d_c1 .gt. 1d-4).and.(d_c2.gt.1d-4).and.(d_omega_sq.gt.1d-4))
+      do while ((d_c1 .gt. 1d-4).and.(d_c2.gt.1d-4).and.(d_omega_sq.gt.1d-4) &
+                .and.(VC.gt.1d-4))
         count=count+1
         
 !Poisson solve for density      
@@ -138,20 +145,28 @@ program main
       
         rho=rho/rho_norm
 
+        omega=sqrt(abs(omega_sq))
+        call virial(T,W,P,omega,rho_2i)
+        
+        VC=abs(2*T-W+3*P)/abs(W)
+        
         d_c1=abs((c1_old-c1)/c1)
         d_c2=abs((c2_old-c2)/c2)
-        d_omega_sq=abs((omega_sq_old-omega_sq)/omega_sq)          
-  
+        d_omega_sq=abs((omega_sq_old-omega_sq)/omega_sq)
+        
+        
         c1_old=c1
         c2_old=c2
         omega_sq_old=omega_sq
-        
-        print*, "Iteration number = ",count
-        print*,"c1 = ",c1, "c2 = ",c2, "omega_sq = ", omega_sq
-        print*,"d_c1 = ",d_c1, "dc_2 = ", d_c2, "d_omega_sq = ", d_omega_sq  
-        
+
+        write (char_it, "(I3)") count
+        print*, "Iteration number = ",trim(char_it), ", VC = ", VC
+!        print*,"T = ",T, " W = ",W," P = ",P,"omega_sq = ",omega_sq
+        !print*,"c1 = ",c1, "c2 = ",c2, "omega_sq = ", omega_sq
+        !print*,"d_c1 = ",d_c1, "dc_2 = ", d_c2, "d_omega_sq = ", d_omega_sq  
+
      enddo
-     print*,"old rho_2i",rho_2i, "old h_max", h_max 
+!     print*,"old rho_2i",rho_2i, "old h_max", h_max 
      
      rho_2i=rho(ix,2,1)
      h_max=maxval(enth)
