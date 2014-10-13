@@ -10,7 +10,7 @@ subroutine rhoavg(rav)
    common /poisson/ pot, rho
 !*
 !*  Local Variables  
-   real :: m, dr, rav,pi,vol,r
+   real :: m, dr, rav,pi,vol,r, counter
    integer :: i,j,count
     
     
@@ -19,9 +19,10 @@ subroutine rhoavg(rav)
   count=0
    
    
-   dr=1.0/(numr-1)
+   dr=1.0/(ax-1.5)
    vol=0.0
    
+   counter=2.0
    do i=2,ax
      do j=2,by
         r=(i-1.5)*dr
@@ -30,6 +31,7 @@ subroutine rhoavg(rav)
           count=count+1
         endif
      enddo
+     counter=counter+1.0
    enddo 
    
    vol=vol*2

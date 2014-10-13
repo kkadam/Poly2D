@@ -9,40 +9,45 @@ subroutine virial(T,W,P,omega,rho_2i)
   common /vir/enth  
   
   
-  real :: T, W, P, omega, r, m, dr, pi, press, Re, rho_2i
+  real :: T, W, P, omega, r, m, dr, pi, press, Re, rho_2i, count
   integer :: i,j
   
   Pi=3.14159265359
   
-  dr=1.0/(numr-1)
-  Re=(ax-1.5)/(numr-1.5)
+   dr=1.0/(ax-1.5)
+   Re=1.0!(ax-1.5)/(numr-3.0)
 !  print*, dr
   !Find rotational energy T
   T=0.0
+  count=2.0
   do i=2,ax
      do j=2,numz  !was by
-        r=(i-1.5)*dr
+        r=(count-1.5)*dr
         m=rho(i,j,1)*2*pi*r*dr**2
         T=T+0.5*m*r**2*omega**2
      enddo
+     count=count+1.0
    enddo  
    T=T*2/Re**5
 
   !Find Potential energy W
   W=0.0
+  count=2.0
   do i=2,ax
      do j=2,numz  !was by
-        r=(i-1.5)*dr
+        r=(count-1.5)*dr
         W=W-0.5*pot(i,j,1)*rho(i,j,1)*2*pi*r*dr**2
      enddo
+     count=count+1.0
   enddo   	  
   W=W*2/Re**3  
 
   !Find pressure energy P
   P=0.0
+  count=2.0
   do i=2,ax
      do j=2,numz  !was by
-        r=(i-1.5)*dr
+        r=(count-1.5)*dr
         if (rho(i,j,1).gt.rho_2i) then
           press=rho(i,j,1)*enth(i,j,1)/(1.0+np1)
         else
@@ -50,6 +55,7 @@ subroutine virial(T,W,P,omega,rho_2i)
         endif
         P=P+press*2*pi*r*dr**2
      enddo
+     count=count+1.0
    enddo  
   P=P*2/Re**3 
   return

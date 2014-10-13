@@ -58,7 +58,7 @@ subroutine print1default(inarray,axis,inum)
 !!Write array  
     open(unit=10,file=filename)
       do i=1,numz  
-        write(10,*) inarray(inum,i,1) 
+        write(10,*) i, inarray(inum,i,1) 
       enddo
     close(10) 
 
@@ -77,7 +77,7 @@ subroutine print1default(inarray,axis,inum)
 !!Write array
       open(unit=10,file=filename)
       do i=1,numr  
-        write(10,*) inarray(i,inum,1) 
+        write(10,*) i, inarray(i,inum,1) 
       enddo
     close(10) 
   

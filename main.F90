@@ -21,7 +21,7 @@ program main
       common /vir/enth
 
       real, allocatable :: rho3d(:,:,:)
-
+      
 !*
 !************************************************************      
 !*
@@ -65,7 +65,7 @@ program main
 !      call print1d(psi,"y",2,"psi")
       
 !Normalization      
-      Re=(ax-1.5)/(numr-1.5)
+      Re=1.0!(ax-1.5)/(numr-3.0)
       
       
       
@@ -140,7 +140,11 @@ program main
               endif      
           enddo
         enddo          
-      
+        
+do i=1, numz
+   rho(1,i,1)=rho(2,i,1)    !Freaking oscillations!
+enddo
+        
         rho_norm=maxval(rho)
       
         rho=rho/rho_norm
@@ -177,8 +181,7 @@ program main
 
      call getinfo(omega_sq,h_max,rho_2i,count,cput)
 
-     call print2default(rho)
-     call print1default(rho,"x",2)
+
 !     call print1d(enth,"y",2,"enth")
 !     call print1d(pot,"y",2,"pot")
      do i=1,numr
@@ -198,24 +201,56 @@ program main
            enddo
         enddo
      enddo      
+
+     call print2default(rho)
+     call print1default(rho,"x",2)
+     call print1default(rho,"y",2)     
      
+   open(unit=12,file="star1_confirm")
+         do j=1,numz
+           do i=1,numr
+             write(12,*) i,j,rho3d(i,j,1)
+           enddo
+           write(12,*)
+         enddo
+  close(12)         
+  print*,"File star1_confirm printed"         
+  
 !Write binary output file for code initial_conditions_fc.F90 
     open(unit=8,file='density.bin',                                   &
-        form='unformatted',convert='BIG_ENDIAN',status='replace')
+        form='unformatted',convert='BIG_ENDIAN',status='unknown')
        write(8) rho3d
     close(8)
-         open(unit=10,file="star1")
-         do j=1,numr
-           do i=1,numz
-             write(10,*) i,j,rho3d(i,j,1)
-             enddo
-           write(10,*)
+
+	
+  open(unit=12,file="star1")
+         do j=1,numz
+           do i=1,numr
+             write(12,*) i,j,rho3d(i,j,1)
+           enddo
+           write(12,*)
          enddo
-         close(10)	
+  close(12)         
+  print*,"File star1 printed"
+  	
+	
+	
+      open(unit=12,file="star2")
+         do j=1,numz
+           do i=1,numr
+             write(12,*) i,j,rho3d(i,j,256/2)
+           enddo
+           write(12,*)
+         enddo
+  close(12)         
+  print*,"File star2 printed"
+  
+  
+  
      print*,"Binary file density.bin printed"
      print*,"==========================================================================="
       
-      
+
       
       stop
 end program main
