@@ -11,7 +11,7 @@ subroutine getinfo(h_0,h_max,rho_2i,count,cput)
                char_p_max,char_mac_x,char_mac_y,char_cput,char_count,        &
                char_bx, char_T, char_W, char_3P, char_ix, char_np2, char_mu1,&
                char_mu2, char_rcore, char_m_core, char_frac_core,            &
-               char_kappa1, char_kappa2, char_rho1i, char_rho2i, char_vc
+               char_kappa1, char_kappa2, char_rho1i, char_rho2i, char_vc, char_omega
   integer :: count
 
   Pi=3.14159265359
@@ -98,7 +98,7 @@ subroutine getinfo(h_0,h_max,rho_2i,count,cput)
   write (char_kappa2, "(F6.4)") kappa2
   write (char_rho1i, "(F6.4)") rho_1i  
   write (char_rho2i, "(F6.4)") rho_2i
-    
+  write (char_omega, "(F6.4)") omega   
   
   if (bx==2) then
 !!Make filename
@@ -118,7 +118,9 @@ subroutine getinfo(h_0,h_max,rho_2i,count,cput)
   print*,"Core mass = ", trim(char_m_core)
   print*,"Core mass fraction = ", trim(char_frac_core)
   print*,"Resolution = ", trim(char_numr),"x", trim(char_numz)
-  print*,"kappa_core = ",trim(char_kappa1), "  kappa_env = ", trim(char_kappa2) 
+  print*,"kappa_core = ",kappa1, "  kappa_env = ", kappa2
+  print*, "Omega", omega
+  print*, "Omega_sq", h_0
   print*,"Interface density: ", "Core = ", trim(char_rho1i), "  Env = ", trim(char_rho2i) 
   print*,"b/a = ", trim(char_by), "/", trim(char_ax)
   print*,"  rb  ","  Omega_sq  ","  M     ", "  V   ","    J   ","    T   ", "    -W   "  &
@@ -134,7 +136,11 @@ subroutine getinfo(h_0,h_max,rho_2i,count,cput)
   
 !!Data is in following format
 !!np1 np2 mu1 mu2 ix by ax numr numz r_core rb m_core frac_core Omega_sq M V J T -W 3PI P_max 
-  
+ 
+!np1 np2 mu1 mu2 ix by ax numr numz rcore rb mcore fraccore h0 m vol am T W 3P pmax 
+!kappa1 kappa2 rho1i rho2i VC count cput omega 
+
+ 
   open(unit=10,file=filename)
   write(10,*) trim(char_np1)," ",trim(char_np2)," ",trim(char_mu1)," ",trim(char_mu2),     &
   " ",trim(char_ix)," ",trim(char_by)," ",trim(char_ax), " ",trim(char_numr)," ",          &
@@ -142,8 +148,19 @@ subroutine getinfo(h_0,h_max,rho_2i,count,cput)
   trim(char_frac_core)," ",trim(char_h_0)," ",trim(char_m)," ",trim(char_vol)," ",         &
   trim(char_am), " ",trim(char_T)," ", trim(char_W)," ",trim(char_3P)," ",trim(char_p_max),&
   " ",trim(char_kappa1)," ",trim(char_kappa1)," ",trim(char_rho1i)," ",trim(char_rho2i),   &
-  " ",VC," ", trim(char_count), " ",trim(char_cput)
+  " ",VC," ", trim(char_count), " ",trim(char_cput), " ", trim(char_omega)
   close(10)
+
+  open(unit=13,file="autoread.dat")
+  write(13,*) trim(char_np1)," ",trim(char_np2)," ",trim(char_mu1)," ",trim(char_mu2),     &
+  " ",trim(char_ix)," ",trim(char_by)," ",trim(char_ax), " ",trim(char_numr)," ",          &
+  trim(char_numz)," ",trim(char_rcore)," ",trim(char_rb)," ",trim(char_m_core)," ",        &
+  trim(char_frac_core)," ",trim(char_h_0)," ",trim(char_m)," ",trim(char_vol)," ",         &
+  trim(char_am), " ",trim(char_T)," ", trim(char_W)," ",trim(char_3P)," ",trim(char_p_max),&
+  " ",trim(char_kappa1)," ",trim(char_kappa2)," ",trim(char_rho1i)," ",trim(char_rho2i),   &
+  " ",VC," ", trim(char_count), " ",trim(char_cput), " ", trim(char_omega)
+  close(13)
+
 
   print*, trim(filename)
   

@@ -1,8 +1,9 @@
 
 !Gridsize
-       integer, parameter :: numr = 130
+       integer, parameter :: numr = 100
        integer, parameter :: numz = 130
        integer, parameter :: numphi = 1
+       real, parameter :: eps = 1e-4
 
 !Polytropic index        
        real, parameter :: np1=3.0
@@ -12,12 +13,12 @@
        real, parameter :: mu2=1
        
 !Specify Boundary points A and B for a 2d configuration     
-      integer, parameter :: ix=15
+      integer, parameter :: ix=20
       integer, parameter :: ax=60
       integer, parameter :: ay=2
       
       integer, parameter :: bx=2
-      integer, parameter :: by=60
+      integer, parameter :: by=50
 
       
 !Not sure what these are

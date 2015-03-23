@@ -29,7 +29,7 @@ program main
       real :: w_rot, phi_a, phi_b, h_a, h_b, psi_a,psi_b,phi_c
       real :: rho_c, rho_norm, h_max
       integer :: i,j,k,count
-      real :: cpu1,cpu2, p_max,cput
+      real :: cpu1,cpu2, p_max,cput, pi
       real :: phi_i, psi_i, rho_2i, gamma1, gamma2, h_2i
       real :: c1,c2,omega_sq,d_c1,d_c2,d_omega_sq,c1_old,c2_old,&
               omega_sq_old, VC, omega
@@ -42,7 +42,8 @@ program main
 	
       call cpu_time(cpu1)
       print*, "SCF Started!!"   
-
+      Pi=3.14159265359
+      print*,pi
       allocate(rho3d(numr,numz,256))
       gamma1=1+1.0/np1
       gamma2=1+1.0/np2
@@ -79,8 +80,8 @@ program main
       omega_sq=0
       count=0
       
-      do while ((d_c1 .gt. 1d-4).and.(d_c2.gt.1d-4).and.(d_omega_sq.gt.1d-4) &
-                .and.(VC.gt.1d-4))
+      do while ((d_c1 .gt. eps).and.(d_c2.gt.eps).and.(d_omega_sq.gt.eps) &
+                .and.(VC.gt.eps))
         count=count+1
         
 !Poisson solve for density      

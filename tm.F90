@@ -157,10 +157,10 @@
                       Kmum = ellf(mum)
                       Emum = elle(mum)
                       qm(1) = Kmum * mum
-                      qm(2) = xm * mum * Kmum - lam * Emum
-                      do m = 3, mmax
-                qm(m) = (2.0*nu(m)+1.0)/(nu(m)+1.0)*xm*qm(m-1) - nu(m)/(nu(m)+1.0)*qm(m-2)
-                      enddo
+!                      qm(2) = xm * mum * Kmum - lam * Emum
+!                      do m = 3, mmax
+!                qm(m) = (2.0*nu(m)+1.0)/(nu(m)+1.0)*xm*qm(m-1) - nu(m)/(nu(m)+1.0)*qm(m-2)
+!                      enddo
                    else
                       index = 0.0
                       do m = 1, mmax
@@ -201,10 +201,10 @@
                      Kmup = ellf(mup)
                      Emup = elle(mup)
                      qp(1) = Kmup*mup
-                     qp(2) = xp*mup*Kmup - lap*Emup
-                     do m = 3, mmax
-                        qp(m) = (2.0*nu(m)+1.0)/(nu(m)+1.0)*xp*qp(m-1) -nu(m)/(nu(m)+1.0)*qp(m-2)
-                     enddo
+!                     qp(2) = xp*mup*Kmup - lap*Emup
+!                     do m = 3, mmax
+!                        qp(m) = (2.0*nu(m)+1.0)/(nu(m)+1.0)*xp*qp(m-1) -nu(m)/(nu(m)+1.0)*qp(m-2)
+!                     enddo
                   else
                      index = 0.0
                      do m = 1, mmax
@@ -225,10 +225,10 @@
                      Kmum = ellf(mum)
                      Emum = elle(mum)
                      qm(1) = Kmum*mum
-                     qm(2) = xm*mum*Kmum - lam*Emum
-                     do m = 3, mmax
-                        qm(m) = (2.0*nu(m)+1.0)/(nu(m)+1.0)*xm*qm(m-1) - nu(m)/(nu(m)+1.0)*qm(m-2)
-                     enddo
+!                     qm(2) = xm*mum*Kmum - lam*Emum
+!                     do m = 3, mmax
+!                        qm(m) = (2.0*nu(m)+1.0)/(nu(m)+1.0)*xm*qm(m-1) - nu(m)/(nu(m)+1.0)*qm(m-2)
+!                     enddo
                   else
                      index = 0.0
                      do m = 1, mmax
@@ -263,7 +263,7 @@
                       Kmup = ellf(mup)
                       Emup = elle(mup)
                       qp(1) = Kmup*mup
-                      qp(2) = (four_thirds*xp*xp-one_third)*mup*Kmup -four_thirds*xp*lap*Emup
+!                      qp(2) = (four_thirds*xp*xp-one_third)*mup*Kmup -four_thirds*xp*lap*Emup
 !                      do m = 3, mmax
 !                         qp(m) = qp(m-1)*((2.0*nu(m)+3.0)*(2.0*nu(m)+1.0)*xp*xp/
 !     &                           ((nu(m)+2.0)*(nu(m)+1.0)) - (2.0*nu(m)+3.0)*
@@ -294,7 +294,7 @@
                       Kmum = ellf(mum)
                       Emum = elle(mum)
                       qm(1) = Kmum*mum
-                      qm(2) = (four_thirds*xm*xm-one_third)*mum*Kmum - four_thirds*xm*lam*Emum
+!                      qm(2) = (four_thirds*xm*xm-one_third)*mum*Kmum - four_thirds*xm*lam*Emum
 !                      do m = 3, mmax
 !                         qm(m) = qm(m-1)*((2.0*nu(m)+3.0)*(2.0*nu(m)+1.0)*xm*xm/
 !     &                           ((nu(m)+2.0)*(nu(m)+1.0)) - (2.0*nu(m)+3.0)*
