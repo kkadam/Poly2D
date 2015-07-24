@@ -63,13 +63,11 @@
 
        real, dimension(numz,mmax) :: sum_sid_C, sum_sid_S
 
-       real :: factor, angle, Pi
+       real :: factor, angle
 
        integer :: i, j, k, l, m, lwrb, uprb
 
        
-       
-       Pi=3.14159265359       
 !*
 !****************************************************************
 ! initialize the local variables

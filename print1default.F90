@@ -33,14 +33,14 @@ subroutine print1default(inarray,axis,inum)
     write (char_bx, "(I3)") bx
   endif 
 
-  write (char_np1, "(F3.1)") np1
-  write (char_np2, "(F3.1)") np2
+  write (char_np1, "(F4.1)") np1
+  write (char_np2, "(F4.1)") np2
   write (char_numr, "(I3)") numr
   write (char_numz, "(I3)") numz
   write (char_ix, "(I2)") ix
-  write (char_mu1,"(F3.1)") mu1
-  write (char_mu2,"(F3.1)") mu2
-  write (char_rcore,"(F4.2)") ix*1.0/ax  
+  write (char_mu1,"(F4.1)") mu1
+  write (char_mu2,"(F4.1)") mu2
+  write (char_rcore,"(F5.2)") ix*1.0/ax  
 
 !!1D slice along x-direction
   if (axis=="x") then

@@ -8,11 +8,9 @@ subroutine virial(T,W,P,omega,rho_2i)
   real, dimension(numr,numz,numphi) :: enth
   common /vir/enth  
   
-  
-  real :: T, W, P, omega, r, m, dr, pi, press, Re, rho_2i, count
+  real :: T, W, P, omega, r, m, dr, press, Re, rho_2i, count
   integer :: i,j
   
-  Pi=3.14159265359
   
    dr=1.0/(ax-1.5)
    Re=1.0!(ax-1.5)/(numr-3.0)

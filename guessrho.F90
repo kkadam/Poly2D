@@ -8,11 +8,10 @@ subroutine guessrho
   real, dimension(numr,numz,numphi) :: phi, phi1
 !Initialize  
   integer:: i,j,k
-  double precision:: Pi, M, G,r, slope, c, rb,imx,imy,m1,m2
+  double precision:: M, G,r, slope, c, rb,imx,imy,m1,m2
   double precision:: c1,c2
   real:: den
 
-  Pi=3.14159265359
   den=1.0
   G=1.0
   rb=by*1.0/ax

@@ -55,9 +55,8 @@ subroutine sph(den,m,vol,mom)
   common /poisson/ pot, rho
   
   integer:: i,j,k,count
-  real :: radius, m, vol, mom,angle,den,r,c,pi
+  real :: radius, m, vol, mom,angle,den,r,c
   
-  Pi=3.14159265359
   radius=(ax-1.5)	
   c=0
   count=0
@@ -103,10 +102,9 @@ subroutine cyl(den,m,vol,mom)
   common /poisson/ pot, rho
   
   integer:: i,j,k, count
-  real :: radius, height, m, vol, mom,den, pi
+  real :: radius, height, m, vol, mom,den
 
   count=0
-  Pi=3.14159265359
   
   do i=2,numr
     do j=2,numz
@@ -139,10 +137,8 @@ subroutine lin(den,m,vol,mom)
   common /poisson/ pot, rho
 
   integer:: i,j,k
-  real :: slope, c, pi, count
+  real :: slope, c, count
   real :: radius, height, m, vol, mom, den
-  
-  Pi=3.14159265359
   
   slope=-by*1.0/ax	
   c=by*1.0  
@@ -150,7 +146,6 @@ subroutine lin(den,m,vol,mom)
   
   count=0
   radius=(ax-1.5)
-  Pi=3.14159265359
   
   do i=2,numr
     do j=2,numz
@@ -184,7 +179,7 @@ subroutine ghost(den)
   common /poisson/ pot, rho
   
   integer:: i,j,k
-  real :: slope, c, pi, den
+  real :: slope, c, den
   
   slope=1	  
   

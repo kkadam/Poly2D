@@ -68,14 +68,13 @@
 
        integer :: i, j, k, l, m, index
 
-       real :: alph, dtt, dtt_mtwogamma, angle, Pi
+       real :: alph, dtt, dtt_mtwogamma, angle
 
        real, dimension(nsteps) :: dt
 
 !* 
 !********************************************************************
 ! initialize the local variables
-       Pi=3.14159265359
        ffrho =  0.0
        ffpot = 0.0
        knownr = 0.0

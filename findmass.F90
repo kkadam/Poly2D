@@ -7,11 +7,10 @@ subroutine findmass(rho_2i,m_core,m)
    real, dimension(numr,numz,numphi) :: pot, rho
    common /poisson/ pot, rho
 !*  
-   real :: m, dr,pi,r,Re,rho_2i,m_core, counter
+   real :: m, dr,r,Re,rho_2i,m_core, counter
    integer :: i,j, count
 !*   
    
-   Pi=3.14159265359 
    dr=1.0/(ax-1.5)
    Re=1!(ax-1.5)/(numr-3.0)
    m=0.0

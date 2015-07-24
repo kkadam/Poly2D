@@ -11,12 +11,11 @@ subroutine findvol(vol)
    common /poisson/ pot, rho
 !*
 !*  Local Variables  
-   real :: m, dr, pi,vol,r,Re, counter
+   real :: m, dr, vol,r,Re, counter
    integer :: i,j,count
     
     
 !  print*, ">>> rhoavg"
-  Pi=3.14159265359
   count=0
    
    

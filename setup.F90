@@ -27,8 +27,8 @@
       common /poisson/ pot, rho
       
       
-      real :: pi, grav
-      common /constants/ pi, grav
+      real :: grav
+      common /constants/  grav
 
       real :: dr, dz, dphi, drinv, dzinv, dphiinv
       common /coord_differentials/ dr, dz, dphi, drinv, dzinv, dphiinv
@@ -76,7 +76,6 @@
 
 
 !  initialize the run parameters
-      pi = acos(-1.0)
       grav = 1.0
 !      write(*,*) 'SETUP: pi ', pi
 

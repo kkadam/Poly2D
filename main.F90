@@ -29,7 +29,7 @@ program main
       real :: w_rot, phi_a, phi_b, h_a, h_b, psi_a,psi_b,phi_c
       real :: rho_c, rho_norm, h_max
       integer :: i,j,k,count
-      real :: cpu1,cpu2, p_max,cput, pi
+      real :: cpu1,cpu2, p_max,cput
       real :: phi_i, psi_i, rho_2i, gamma1, gamma2, h_2i
       real :: c1,c2,omega_sq,d_c1,d_c2,d_omega_sq,c1_old,c2_old,&
               omega_sq_old, VC, omega
@@ -42,8 +42,7 @@ program main
 	
       call cpu_time(cpu1)
       print*, "SCF Started!!"   
-      Pi=3.14159265359
-      print*,pi
+      
       allocate(rho3d(numr,numz,256))
       gamma1=1+1.0/np1
       gamma2=1+1.0/np2
@@ -223,7 +222,7 @@ enddo
        write(8) rho3d
     close(8)
 
-	
+
   open(unit=12,file="star1")
          do j=1,numz
            do i=1,numr
@@ -233,10 +232,9 @@ enddo
          enddo
   close(12)         
   print*,"File star1 printed"
-  	
-	
-	
-      open(unit=12,file="star2")
+      
+
+  open(unit=12,file="star2")
          do j=1,numz
            do i=1,numr
              write(12,*) i,j,rho3d(i,j,256/2)

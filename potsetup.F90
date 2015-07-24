@@ -40,8 +40,8 @@
        real :: gamma, piinv, four_pi
        common /pot_constants/ gamma, piinv, four_pi
 
-      real :: pi, grav
-      common /constants/ pi, grav
+      real ::  grav
+      common /constants/ grav
 
        real :: dr, dz, dphi, drinv, dzinv, dphiinv
        common /coord_differentials/ dr, dz, dphi, drinv, dzinv, dphiinv
