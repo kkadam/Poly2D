@@ -32,6 +32,7 @@
 
        real, parameter :: numphiinv = 1.0 / numphi
 
+       real, parameter :: pi = acos(-1.0)
 !Symmetry type
        integer, parameter :: isym=2
 

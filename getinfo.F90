@@ -14,13 +14,21 @@ subroutine getinfo(h_0,h_max,rho_2i,count,cput)
                char_kappa1, char_kappa2, char_rho1i, char_rho2i, char_vc,    &
                char_omega, char_stab
   integer :: count
-  double precision :: eggx, eggm, eggr, ksq, ksq_c, ksq_e, kt, kc, ke
+  double precision :: eggx, eggm, eggr, kt, kc, ke
 
-  rb=(by-1.5)/(ax-1.5)
+   if (by==2) then
+      rb=-(bx-1.5)/(ax-1.5)
+   else 
+      rb=(by-1.5)/(ax-1.5)
+   endif
 
   call findmass(rho_2i,m_core,m)
   call findvol(vol)
-  call findmom(mom)
+  call findmom(rho_2i,mom,kt,kc,ke)
+  kc = kc/m
+  ke = ke/m
+  kt = kt/m  
+
 
   frac_core = m_core/m
 
@@ -107,15 +115,15 @@ subroutine getinfo(h_0,h_max,rho_2i,count,cput)
   if (bx==2) then
 !!Make filename
     filename='Bi_'//trim(char_ix)//"_"//trim(char_np1)//'w'//trim(char_mu1)&
-    //'_'//trim(char_np2)//'w'//trim(char_mu2)//'_'//trim(char_ax)//"x"//&
+    //'_'//trim(char_np2)//'w'//trim(char_mu2)//'_'//trim(char_ax)//"x"//  &
     trim(char_by)//"_"//trim(char_numr)//".info"
   else
     filename='Bi_-'//trim(char_ix)//"_"//trim(char_np1)//'w'//trim(char_mu1)&
-    //'_'//trim(char_np2)//'w'//trim(char_mu2)//'_'//trim(char_ax)//"x"//&
+    //'_'//trim(char_np2)//'w'//trim(char_mu2)//'_'//trim(char_ax)//"x"//   &
     trim(char_by)//"_"//trim(char_numr)//".info"
   endif
 
-    print*,"================================SUMMARY===================================="
+  print*,"================================SUMMARY===================================="
   print*,"n_core  = ", trim(char_np1), "  n_env = ", trim(char_np2)
   print*,"mu_core = ", trim(char_mu1), "  mu_env = ", trim(char_mu2)
   print*,"Equatorial r_core = ", trim(char_rcore)
@@ -125,19 +133,19 @@ subroutine getinfo(h_0,h_max,rho_2i,count,cput)
   print*,"kappa_core = ",kappa1, "  kappa_env = ", kappa2
   print*, "Omega", omega
   print*, "Omega_sq", h_0
-  print*,"Interface density: ", "Core = ", trim(char_rho1i), "  Env = ", trim(char_rho2i) 
+  print*,"Interface density: ", "Core = ", trim(char_rho1i), "  Env = ", trim(char_rho2i)
   print*,"b/a = ", trim(char_by), "/", trim(char_ax)
-  print*,"  rb  ","  Omega_sq  ","  M     ", "  V   ","    J   ","    T   ", "    -W   "  &
+  print*,"  rb  ","  Omega_sq  ","  M     ", "  V   ","    J   ","    T   ", "   -W   "&
   ,"  3PI  ","   P_max  "
-  print*,trim(char_rb),"   ",trim(char_h_0),"   ",trim(char_m),"  ", trim(char_vol),      &
-  "  ",trim(char_am),"  ",trim(char_T),"  ",trim(char_W),"  ",trim(char_3P),"  ",         &
+  print*,trim(char_rb),"   ",trim(char_h_0),"   ",trim(char_m),"  ",trim(char_vol),    &
+  "  ",trim(char_am),"  ",trim(char_T),"  ",trim(char_W),"  ",trim(char_3P)," ",       &
   trim(char_p_max)
- 
+
   print*,"VC = ", VC
   print*,"cpu time =", trim(char_cput) , " min"
-  
+
   print*,"==============================OUTPUT FILES================================="  
-  
+
 !!Data is in following format
 !!np1 np2 mu1 mu2 ix by ax numr numz r_core rb m_core frac_core Omega_sq M V J T -W 3PI P_max 
  
@@ -191,7 +199,31 @@ subroutine getinfo(h_0,h_max,rho_2i,count,cput)
   write(14,*) "cpu time =", trim(char_cput) , " min"
   write(14,*) "============================================================================"
 
+  open(unit=13,file="hachisu.dat")
+  write(13,*) trim(char_rb)," ",trim(char_h_0)," ",trim(char_m),"",trim(char_vol)," ",    &
+  trim(char_am), " ",trim(char_T)," ", trim(char_W)," ",trim(char_3P)," ",trim(char_p_max)
+  close(13)
 
+
+  open(unit=13,file="maclaurin.dat")
+  write(13,*) mac_x, " ", mac_y, " ", stab
+  close(13)
+
+    eggx = log10(1/rho_1i)
+    eggm = frac_core
+    eggr = log10(1/r_core)
+
+    open(unit=12,file='egg.dat',access='APPEND')
+    write(12,*) eggx, eggm, eggr
+    close(12)
+
+  open(unit=13,file="sc.dat")
+  write(13,*) r_core, frac_core
+  close(13)
+
+  open(unit=13,file="ru.dat")
+  write(13,*) r_core, frac_core, m, h_0, kt, kc, ke
+  close(13)
   
   print*, trim(filename)
   

@@ -1,7 +1,9 @@
 #compiler
 #FC=/opt/intel/composerxe-2011.5.209/bin/intel64/ifort
 #FC=/usr/local/bin/gfortran
-FC=/usr/bin/ifort     #works
+#FC=/usr/bin/ifort     #works on moroni
+FC=/usr/local/compilers/Intel/cluster_studio_xe_2013.1.046/composer_xe_2013_sp1.2.144/bin/intel64/ifort
+
 
 F90FILES= bessel.F90 elle.F90 ellf.F90 gammln.F90\
 helmadi.F90 main.F90 potential_solver.F90 potsetup.F90 rd.F90 rf.F90 realft.F90 \
@@ -17,15 +19,16 @@ scf:$(OFILES)
 	$(FC) $(OFILES) -O0 -o scf   #works
 #	$(FC) $(OFILES) -o scf
 
-
+$(OFILES): runhydro.h
+.f90.o: runhydro.h
 $(OFILES):$(F90FILES)
 	#$(FC) -g -c -r8 -O3 $(F90FILES)
-        #$(FC) -g -c $(F90FILES) 
+	#$(FC) -g -c $(F90FILES) 
 	#$(FC) -g -check all -c -r8 $(F90FILES)
 	#$(FC) -c -fdefault-real-8 $(F90FILES)
 	#$FC -g -c -r8 $(F90FILES)
 	#$(FC) -g -c -r8 -O0 $(F90FILES)
-	$(FC) -c -O0 -r8 $(F90FILES)    #works
+	$(FC) -c -O0 -r8 $(F90FILES) $<   #works
 
 
 	
