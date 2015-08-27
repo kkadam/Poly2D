@@ -3,13 +3,15 @@
        integer, parameter :: numr = 100
        integer, parameter :: numz = 130
        integer, parameter :: numphi = 1
+       integer, parameter :: hydrophi = 256
        real, parameter :: eps = 1e-4
 
+
 !Polytropic index        
-       real, parameter :: np1=3.0
+       real, parameter :: np1=1.5
        real, parameter :: np2=1.5
 
-       real, parameter :: mu1=2
+       real, parameter :: mu1=1
        real, parameter :: mu2=1
        
 !Specify Boundary points A and B for a 2d configuration     

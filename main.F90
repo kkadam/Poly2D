@@ -43,7 +43,7 @@ program main
       call cpu_time(cpu1)
       print*, "SCF Started!!"   
       
-      allocate(rho3d(numr,numz,256))
+      allocate(rho3d(numr,numz,hydrophi))
       gamma1=1+1.0/np1
       gamma2=1+1.0/np2
       
@@ -186,7 +186,7 @@ enddo
 !     call print1d(pot,"y",2,"pot")
      do i=1,numr
         do j=1,numz
-           do k=1,256
+           do k=1,hydrophi
               rho3d(i,j,k)  = rho(i,j,1)
            enddo
         enddo
@@ -194,7 +194,7 @@ enddo
 
      do i=1,numr
         do j=1,numz
-           do k=1,256      
+           do k=1,hydrophi 
               if (rho3d(i,j,k).lt. 1d-10) then 
                  rho3d(i,j,k) = 1d-10
               endif
@@ -237,7 +237,7 @@ enddo
   open(unit=12,file="star2")
          do j=1,numz
            do i=1,numr
-             write(12,*) i,j,rho3d(i,j,256/2)
+             write(12,*) i,j,rho3d(i,j,hydrophi/2)
            enddo
            write(12,*)
          enddo

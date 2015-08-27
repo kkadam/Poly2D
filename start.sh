@@ -1,7 +1,7 @@
 #!/bin/bash
 ### Set important parameters ###
 run=s1
-readme="Fixed normalization of envelope?, similar to m26"
+readme="test hydrophi"
 resolution=HR  
 #Options for resolution are LR, HR, SHR
 work_dir=/work/kkadam/lonely_runs
