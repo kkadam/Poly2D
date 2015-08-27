@@ -21,7 +21,7 @@ program main
       common /vir/enth
 
       real, allocatable :: rho3d(:,:,:)
-      
+      real, allocatable :: pres3d(:,:,:)      
 !*
 !************************************************************      
 !*
@@ -29,13 +29,14 @@ program main
       real :: w_rot, phi_a, phi_b, h_a, h_b, psi_a,psi_b,phi_c
       real :: rho_c, rho_norm, h_max
       integer :: i,j,k,count
-      real :: cpu1,cpu2, p_max,cput
+      real :: cpu1,cpu2, p_max,cput, kappa1, kappa2
       real :: phi_i, psi_i, rho_2i, gamma1, gamma2, h_2i
       real :: c1,c2,omega_sq,d_c1,d_c2,d_omega_sq,c1_old,c2_old,&
               omega_sq_old, VC, omega
       real :: T, W, P
       real :: k1,k2, re, rho_1i, h_1i, h_norm, rho_2i_norm
       character*20 char_it 
+      real, dimension(numr,numz,numphi) :: pres
 !* 
 !************************************************************    
     
@@ -44,6 +45,8 @@ program main
       print*, "SCF Started!!"   
       
       allocate(rho3d(numr,numz,hydrophi))
+      allocate(pres3d(numr,numz,hydrophi))
+
       gamma1=1+1.0/np1
       gamma2=1+1.0/np2
       
@@ -179,6 +182,37 @@ enddo
      cput=(cpu2-cpu1)/60.0
      
 
+!Calculate and print pressure for interpolation
+    kappa1 = rho_c*h_max/(np1+1.0)/rho_c**(gamma1)
+    kappa2 = kappa1*rho_1i**gamma1/rho_2i**gamma2
+
+        do i=1,numr
+          do j=1,numz
+             if (rho(i,j,1).gt.rho_2i) then
+               pres(i,j,1) = kappa1 * rho(i,j,1)**(gamma1)
+             else
+               pres(i,j,1) = kappa2 * rho(i,j,1)**(gamma2)
+             endif
+          enddo
+        enddo
+
+
+     do i=1,numr
+        do j=1,numz
+           do k=1,256
+              pres3d(i,j,k)  = pres(i,j,1)
+           enddo
+        enddo
+     enddo
+
+
+    open(unit=8,file='pressure.bin',                                   &
+        form='unformatted',convert='BIG_ENDIAN',status='unknown')
+       write(8) pres3d
+    close(8)
+
+
+
      call getinfo(omega_sq,h_max,rho_2i,count,cput)
 
 
@@ -244,6 +278,26 @@ enddo
   close(12)         
   print*,"File star2 printed"
   
+  open(unit=12,file="pres1")
+         do j=1,numz
+           do i=1,numr
+             write(12,*) i,j,pres3d(i,j,1)
+           enddo
+           write(12,*)
+         enddo
+  close(12)
+  print*,"File pres1 printed"
+
+
+  open(unit=12,file="pres2")
+         do j=1,numz
+           do i=1,numr
+             write(12,*) i,j,pres3d(i,j,hydrophi/2)
+           enddo
+           write(12,*)
+         enddo
+  close(12)
+  print*,"File pres2 printed"
   
   
      print*,"Binary file density.bin printed"

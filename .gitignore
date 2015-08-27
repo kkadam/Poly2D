@@ -2,8 +2,8 @@
 *.o
 
 # Parameter files
-runhydro.h
-bs
+#runhydro.h
+#bs
 
 # Binary
 scf
