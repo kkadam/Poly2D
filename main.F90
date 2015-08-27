@@ -47,6 +47,8 @@ program main
       allocate(rho3d(numr,numz,hydrophi))
       allocate(pres3d(numr,numz,hydrophi))
 
+
+      rho_c = 1.0
       gamma1=1+1.0/np1
       gamma2=1+1.0/np2
       
